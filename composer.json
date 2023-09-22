@@ -1,0 +1,26 @@
+{
+    "name": "essefx/ib-integrator",
+    "description": "Integrator library for vendors API",
+    "keywords": [
+        "bank",
+        "payment-gateway",
+        "payment-processing",
+        "payment-vendor"
+    ],
+    "homepage": "https://payhost.io/",
+    "type": "library",
+    "license": "proprietary",
+    "version": "1.0.1",
+    "authors": [
+        {
+            "name": "essefx",
+            "email": "essefx@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Essefx\\IbIntegrator\\": "src/"
+        }
+    }
+}
