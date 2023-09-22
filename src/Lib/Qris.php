@@ -543,14 +543,18 @@ class Qris
 		return $prop['value'];
 	}
 
+	//
+
 	public function CompileQris()
 	{
 		return $this->Encode();
 	}
-	public function DecompileQris()
+	public function DecompileQris($str, $ob_class, $sort = false)
 	{
-		return $this->Decode();
+		return $this->Decode($str, $ob_class, $sort);
 	}
+
+	//
 
 	public function Encode()
 	{
@@ -614,7 +618,7 @@ class Qris
 				$fetch = substr($str_remains, 4, (int) $pos_len);
 				$fetch_str = $id_root . $pos_len . $fetch;
 				$fetch_array = [];
-				$str_remains = preg_replace('/' . $fetch_str . '/', '', $str_remains, 1); // $str_remains = trim(str_replace($fetch_str, '', $str_remains));
+				$str_remains = preg_replace('/' . $fetch_str . '/', '', $str_remains, 1);
 				if (!empty($id_roots[$id_root])
 					&& $id_roots[$id_root]['searched'] == 0 // Avoid double assignment
 				) {
@@ -700,25 +704,24 @@ class Qris
 		return $arr_qris;
 	}
 
-	public function ReadQR($qris_arr)
+	public function Read($qris_arr)
 	{
-		$str_qris = '';
+		$qris_string = '';
 		$id_root_63 = '';
 		foreach ($qris_arr as $arr) {
 			if ($arr['id_root'] != '63') {
-				$str_qris .= $arr['fetch_str'];
+				$qris_string .= $arr['fetch_str'];
 			} else {
 				$id_root_63 = $arr['fetch'];
 			}
 		}
-		// $citt = strtoupper(dechex($this->CRC16_alt($str_qris . '6304'))); // Alt CRC16 fn, more likely stable in 4 digit returns
-		$citt = strtoupper(dechex( (new Crc16)->CCITT($str_qris . '6304') )); // Alt CRC16 fn, more likely stable in 4 digit returns
+		$citt = strtoupper(dechex( (new Crc16)->CCITT($qris_string . '6304') ));
 		if (strlen($citt) == 3) {
 			$citt = '0' . $citt;
 		}
-		$str_qris .= '6304' . $citt;
+		$qris_string .= '6304' . $citt;
 		return [
-			'qris_str_new' => $str_qris,
+			'qris_str_new' => $qris_string,
 			'qris_str_id_root_63' => $id_root_63,
 			'qris_str_new_citt' => $citt,
 		];
