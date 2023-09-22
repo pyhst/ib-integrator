@@ -1,8 +1,8 @@
 <?php
 
-use Essefx\IbIntegrator\Lib\Qris;
-use Essefx\IbIntegrator\Lib\QrisMerchantAccountInfo;
-use Essefx\IbIntegrator\Lib\QrisAdditionalDataField;
+use IbIntegrator\Lib\Qris;
+use IbIntegrator\Lib\QrisMerchantAccountInfo;
+use IbIntegrator\Lib\QrisAdditionalDataField;
 
 require_once __DIR__ . '/../includes.php';
 

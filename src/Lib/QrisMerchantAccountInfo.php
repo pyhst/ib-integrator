@@ -1,6 +1,6 @@
 <?php
 
-namespace Essefx\IbIntegrator\Lib;
+namespace IbIntegrator\Lib;
 
 /**
  *

@@ -1,8 +1,8 @@
 <?php
 
-namespace Essefx\IbIntegrator\Lib;
+namespace IbIntegrator\Lib;
 
-use Essefx\IbIntegrator\Lib\Crc16;
+use IbIntegrator\Lib\Crc16;
 
 class Qris
 {

@@ -1,6 +1,6 @@
 <?php
 
-use Essefx\IbIntegrator\Lib\Qris;
+use IbIntegrator\Lib\Qris;
 
 require_once __DIR__ . '/../includes.php';
 
