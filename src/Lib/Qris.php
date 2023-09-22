@@ -573,7 +573,7 @@ class Qris
 		$debug_citt_attempts = [];
 		//
 		for ($i = 0; $i < $this->encode_attempt; $i++) {
-			$citt = strtoupper(dechex( (new Crc16)->CCITT($qris_string . '6304') ));
+			$citt = strtoupper(dechex((new Crc16)->CCITT_FALSE($qris_string . '6304')));
 			$debug_citt_attempts[] = $citt;
 			if ($i >= $this->encode_attempt) {
 				$debug_arr = [
@@ -585,7 +585,9 @@ class Qris
 				}
 				throw new \Exception("Failed to generate 4 digit CRC", 900);
 			}
-			if (strlen($citt) == 4) { break; }
+			if (strlen($citt) == 4) {
+				break;
+			}
 		}
 		// Append CRC
 		$qris_string .= '6304' . $citt;
@@ -612,17 +614,18 @@ class Qris
 			$arr_qris = [];
 			$str_remains = $str;
 			//
-			for ($i=0; $i<strlen($str); $i++) {
+			for ($i = 0; $i < strlen($str); $i++) {
 				$id_root = substr($str_remains, 0, 2);
 				$pos_len = substr($str_remains, 2, 2);
 				$fetch = substr($str_remains, 4, (int) $pos_len);
 				$fetch_str = $id_root . $pos_len . $fetch;
 				$fetch_array = [];
 				$str_remains = preg_replace('/' . $fetch_str . '/', '', $str_remains, 1);
-				if (!empty($id_roots[$id_root])
+				if (
+					!empty($id_roots[$id_root])
 					&& $id_roots[$id_root]['searched'] == 0 // Avoid double assignment
 				) {
-					switch($id_root) {
+					switch ($id_root) {
 						case '01':
 						case '02':
 						case '03':
@@ -685,11 +688,12 @@ class Qris
 					}
 					$item = [
 						'id_root' => $id_root,
-						'pos_len' => $pos_len,
-						'fetch' => $fetch,
-						'fetch_str' => $fetch_str,
+						'id_root_name' => $id_roots[$id_root]['name'],
+						'data' => $fetch,
+						'length' => $pos_len,
+						'fetch_string' => $fetch_str,
 						'fetch_array' => $fetch_array,
-						'str_remains' => $str_remains,
+						// 'str_remains' => $str_remains,
 					];
 					$arr_qris[$id_root] = $item;
 					$id_roots[$id_root]['searched'] = 1;
@@ -704,26 +708,27 @@ class Qris
 		return $arr_qris;
 	}
 
-	public function Read($qris_arr)
+	public function VerifyCRC($qris_arr)
 	{
 		$qris_string = '';
 		$id_root_63 = '';
 		foreach ($qris_arr as $arr) {
 			if ($arr['id_root'] != '63') {
-				$qris_string .= $arr['fetch_str'];
+				$qris_string .= $arr['fetch_string'];
 			} else {
-				$id_root_63 = $arr['fetch'];
+				$id_root_63 = $arr['data'];
 			}
 		}
-		$citt = strtoupper(dechex( (new Crc16)->CCITT($qris_string . '6304') ));
+		$citt = strtoupper(dechex((new Crc16)->CCITT_FALSE($qris_string . '6304')));
 		if (strlen($citt) == 3) {
 			$citt = '0' . $citt;
 		}
 		$qris_string .= '6304' . $citt;
 		return [
-			'qris_str_new' => $qris_string,
-			'qris_str_id_root_63' => $id_root_63,
-			'qris_str_new_citt' => $citt,
+			'qrstr_new' => $qris_string,
+			'qrstr_idroot63' => $id_root_63,
+			'qrstr_new_ccitt' => $citt,
+			'qrstr_strcmp' => strcmp($id_root_63, $citt),
 		];
 	}
 
