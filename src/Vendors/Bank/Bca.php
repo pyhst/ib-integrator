@@ -2,9 +2,10 @@
 
 namespace IbIntegrator\Vendors\Bank;
 
+use IbIntegrator\Vendors\Vendor;
 use IbIntegrator\Vendors\BankInterface;
 
-class Bca implements BankInterface
+class Bca extends Vendor implements BankInterface
 {
 
 	public function GenerateSignature($args = [])

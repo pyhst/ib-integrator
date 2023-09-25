@@ -127,7 +127,7 @@ if (!function_exists('JSONResult')) {
  *
  */
 if (!function_exists('ErrorString')) {
-	function ErrorString(\Throwable $e, $context = null): string
+	function ErrorString(\Throwable $e, $context = null, $message = null): string
 	{
 		if ($e instanceof \Exception) {
 			return implode('', [
@@ -136,7 +136,8 @@ if (!function_exists('ErrorString')) {
 				"->" . $context,
 				':' . $e->getLine(),
 			]) .
-			($e->getMessage() ? (', ' . $e->getMessage()) : '');
+			($message ? ', ' . $message : '');
+			($e->getMessage() ? ', ' . $e->getMessage() : '');
 		}
 		return $e;
 	}
@@ -148,14 +149,14 @@ if (!function_exists('ErrorString')) {
  *
  */
 if (!function_exists('ErrorResult')) {
-	function ErrorResult(\Throwable $e, $context = null): array
+	function ErrorResult(\Throwable $e, $context = null, $message = null): array
 	{
 		if (
 			(!empty($_ENV['APP_DEBUG']) && $_ENV['APP_DEBUG'] == 'true')
 		) {
 			$debug = [
 				'_debug' => [
-					'error_message' => ErrorString($e, $context ? $context . '()' : ''),
+					'error_message' => ErrorString($e, $context ? $context . '()' : '', $message),
 					'execution_time_ms' => round((microtime(true) - TIMER_START) * 1000, 2),
 				],
 			];
@@ -173,9 +174,9 @@ if (!function_exists('ErrorResult')) {
  *
  */
 if (!function_exists('ThrowErrorException')) {
-	function ThrowErrorException(\Throwable $e, $context = null)
+	function ThrowErrorException(\Throwable $e, $context = null, $message = null)
 	{
-		$error = StringError($e, $context);
+		$error = ErrorString($e, $context, $message);
 		throw new \Exception($error, $e->getCode());
 	}
 }
