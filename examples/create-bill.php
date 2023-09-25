@@ -8,6 +8,7 @@ require_once __DIR__ . '/includes.php';
 $vendor = new Duitku;
 $vendor->setID($_ENV['DUITKU_MERCHANT_ID']);
 $vendor->setAPIKey($_ENV['DUITKU_API_KEY']);
+$vendor->setHostURL($_ENV['DUITKU_HOST_URL']);
 $vendor->setParams([
 	'DisbursementMerchantID' => $_ENV['DUITKU_API_KEY'],
 	'DisbursementAPIKey' => $_ENV['DUITKU_DISBURSEMENT_API_KEY'],
@@ -19,4 +20,8 @@ $transaction->setOrderID(time());
 $transaction->setAmount(100000);
 $transaction->setCustomerName('TESTER');
 
-$bill = $vendor->CreateBilling($transaction);
+// try {
+	$bill = $vendor->CreateBilling($transaction);
+// } catch (\Throwable $e) {
+// 	echo ErrorString($e);
+// }

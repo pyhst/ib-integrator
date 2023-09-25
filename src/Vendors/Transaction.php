@@ -80,7 +80,7 @@ class Transaction
 		$this->currency = 'IDR';
 		$this->currency_code = '360';
 		$this->expire_in = 120; // In minutes
-		$this->expire_at = date($this->time, "+2 hour"); // Precise date/time
+		$this->expire_at = date($this->time, strtotime('+2 hour')); // Precise date/time
 	}
 
 	//
@@ -145,14 +145,14 @@ class Transaction
 		return $this->remark;
 	}
 
-	public function setItem($item): void // public function setItem(&$item_detail): void
+	public function setItems($items): void
 	{
-		$this->item = $item;
+		$this->items = $items;
 	}
 
-	public function getItem() // public function getItem(): ?array
+	public function getItems(): ?array
 	{
-		return $this->item;
+		return $this->items;
 	}
 
 	//

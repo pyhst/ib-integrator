@@ -7,7 +7,7 @@ interface PaymentGatewayInterface
 
 	/*--------------------------------------  // Instruction  -------------------------------------------------------*/
 	public function GenerateSignature($args = []);
-	public function GetToken($args = []);
+	public function AuthGetToken($args = []);
 	//
 	public function CreateBilling(Transaction $transaction);
 	public function InquiryPayment(Transaction $transaction);
