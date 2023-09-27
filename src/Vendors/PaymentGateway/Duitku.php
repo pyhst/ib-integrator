@@ -2,11 +2,13 @@
 
 namespace IbIntegrator\Vendors\PaymentGateway;
 
-use IbIntegrator\Vendors\Vendor;
+use IbIntegrator\Exceptions\ErrorException;
+use IbIntegrator\Exceptions\JsonException;
+
 use IbIntegrator\Vendors\PaymentGatewayInterface;
+use IbIntegrator\Vendors\Vendor;
 use IbIntegrator\Vendors\Transaction;
 use IbIntegrator\Vendors\Requestor;
-use IbIntegrator\Exceptions\RequestorException;
 
 class Duitku extends Vendor implements PaymentGatewayInterface
 {
@@ -26,7 +28,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 
 	public function CreateBilling(Transaction $transaction)
 	{
-		// try {
+		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
 				'/webapi/api/merchant/v2/inquiry'
@@ -78,28 +80,41 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			$request['opt'] = [
 				'to_json' => true,
 			];
-// print_r($request);
 			$post = $this->DoRequest('POST', $request);
-print_r($post);
-exit();
-			if ($post) {
-				if ($post) {
+			$response = (array) $post['response'];
+			extract($response);
+			if (!empty($content) && IsJSON($content)) {
+				$content = (object) json_decode($content);
+				if (
+					!empty($content->statusCode)
+					&& $content->statusCode == "00"
+					&& !empty($content->statusMessage)
+					&& trim(strtoupper($content->statusMessage)) == "SUCCESS"
+				) {
+					/* // Success VA
+						{
+							"merchantCode": "DS15995",
+							"reference": "DS15995232R1EIKIY6HVWPJB",
+							"paymentUrl": "https://sandbox.duitku.com/topup/topupdirectv2.aspx?ref=BC23QGHL75MGRLOO2MF",
+							"vaNumber": "7007014007401309",
+							"amount": "100000",
+							"statusCode": "00",
+							"statusMessage": "SUCCESS"
+						}
+					*/
 					$res = [
 						'status' => '000',
-						'data' => (array) $content->responseData,
+						'data' => (array) $content,
 					];
 				} else {
-					throw new \Exception(implode(': ', [__FUNCTION__ . '() failed', $content ? json_encode($content) : 'Unknown status']), 901);
+					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
 				}
 			} else {
-				throw new \Exception(implode(': ', [__FUNCTION__ . '() failed', $content ?? 'Unknown error']), 902);
+				throw new JsonException(__FUNCTION__, $content, 400, 902);
 			}
-		// } catch (\Throwable $e) {
-			// throw new RequestorException($e, __FUNCTION__);
-			// $error = ErrorString($e, __FUNCTION__);
-			// throw new \Exception($error, $e->getCode());
-		// 	$this->ThrowErrorException($e);
-		// }
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
 		return JSONResult($request, $res ?? [], $status_code ?? 400);
 	}
 

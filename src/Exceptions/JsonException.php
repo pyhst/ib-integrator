@@ -4,7 +4,7 @@ namespace IbIntegrator\Exceptions;
 
 use IbIntegrator\Exceptions\ExceptionInterface;
 
-class RequestorException extends \Exception implements ExceptionInterface
+class JsonException extends \Exception implements ExceptionInterface
 {
 
 	protected $error_code;
@@ -24,15 +24,17 @@ class RequestorException extends \Exception implements ExceptionInterface
 
 	//
 
-	public function __construct($message, $status_code = null, $error_code = 0, $previous = null)
+	public function __construct($context, $message, $status_code = null, $error_code = 0, $previous = null)
 	{
 		if (!$message) {
 			throw new $this('Unknown ' . get_class($this));
 		}
-		$error_message = $message .
+		$error_message =
+			($context ? "$context() failed " : null) .
+			($message ? "$message " : 'Unknown error') .
 			implode('/', [
-				$status_code ? "SC$status_code" : null,
-				$error_code ? "EC$error_code" : null,
+				$status_code ? "SC$status_code" : "",
+				$error_code ? "EC$error_code" : "",
 			]);
 		parent::__construct($error_message, $error_code, $previous);
 		$this->error_message = $error_message;

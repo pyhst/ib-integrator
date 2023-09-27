@@ -3,30 +3,18 @@
 namespace IbIntegrator\Vendors;
 
 use IbIntegrator\HttpClient\GuzzleHttpClient;
-// use IbIntegrator\Vendors\Vendor;
-// use IbIntegrator\Vendors\Transaction;
-use IbIntegrator\Exceptions\RequestorException;
-use IbIntegrator\Exceptions\ApiException;
+use IbIntegrator\Exceptions\ErrorException;
 
 trait Requestor
 {
 
-	// protected $vendor;
-	// protected $transaction;
-	//
 	private static $http_client;
 	//
 	protected $request;
 	protected $response;
 	protected $result;
 
-	// public function __construct(Vendor $vendor, Transaction $transaction)
-	// {
-	// 	$this->vendor = $vendor;
-	// 	$this->transaction = $transaction;
-	// }
-
-	private static function GetClient($args)
+	public function GetClient($args)
 	{
 		if (!SELF::$http_client) {
 			SELF::$http_client = GuzzleHttpClient::getInstance($args);
@@ -34,21 +22,26 @@ trait Requestor
 		return SELF::$http_client;
 	}
 
+	public function SetClient($http_client)
+	{
+		SELF::$http_client = $http_client;
+	}
+
+	//
+
 	public function DoRequest(string $method, $request)
 	{
-		// try {
-			$client = SELF::GetClient([
+		try {
+			$guzzle_client = $this->GetClient([
 				'base_uri' => parse_url($request['url'], PHP_URL_SCHEME) . '://' . parse_url($request['url'], PHP_URL_HOST),
 			]);
-			$response = $client->GuzzleRequest(
+			$response = $guzzle_client->GuzzleRequest(
 				$method,
 				$request['url'] ?? null,
 				$request['data'] ?? [],
 				$request['headers'] ?? [],
 				$request['opt'] ?? [],
 			);
-print_r($response);
-exit();
 			if (is_array($response)) {
 				$result = [
 					'request' => $request,
@@ -67,27 +60,18 @@ exit();
 			} elseif (is_string($response)) {
 				$result = $response;
 			}
-		// } catch (\Throwable $e) {
-		// 	$this->ThrowErrorException($e);
-			// throw $e;
-			// throw new RequestorException($e, __FUNCTION__);
-			// $error_message = ErrorString($e, __FUNCTION__);
-			// throw new \Exception($error_message, $e->getCode());
-			// $error_message = ErrorString($e);
-			// throw new \Exception($error_message, $e->getCode());
-			// throw new RequestorException($e, __FUNCTION__);
-			// $error = ErrorString($e, __FUNCTION__);
-			// throw new \Exception($error, $e->getCode());
-		// }
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
 		$this->request = $request;
 		$this->response = $response;
 		return $result ?? [];
 	}
 
-	public function ThrowErrorException(\Throwable $e, $context = null)
+	public function ThrowErrorException(\Throwable $e, $context = null, $message = null, $previous = null)
 	{
-		$error = ErrorString($e, $context);
-		throw new ApiException($error, $e->getCode());
+		$error = ErrorString($e, $context, $message);
+		throw new \Exception($error, $e->getCode(), $previous);
 	}
 
 }

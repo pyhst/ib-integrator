@@ -35,10 +35,10 @@ class Vendor
 	//
 	protected $params; // Additional parameters
 
-	public function __construct($client_id = null, $client_secret = null)
+	public function __construct($id = null, $secret = null)
 	{
-		$this->client_id = $client_id;
-		$this->client_secret = $client_secret;
+		$this->id = $id;
+		$this->secret = $secret;
 	}
 
 	//

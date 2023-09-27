@@ -4,7 +4,7 @@ namespace IbIntegrator\Exceptions;
 
 use IbIntegrator\Exceptions\ExceptionInterface;
 
-class ApiException extends \Exception implements ExceptionInterface
+class ErrorException extends \Exception implements ExceptionInterface
 {
 
 	protected $error_code;
@@ -24,15 +24,15 @@ class ApiException extends \Exception implements ExceptionInterface
 
 	//
 
-	public function __construct($message, $status_code = null, $error_code = null)
+	public function __construct(\Throwable $e, $context = null, $message = null, $previous = null)
 	{
-		if (!$message) {
+		if (!$e) {
 			throw new $this('Unknown ' . get_class($this));
 		}
-		$error_message = $message . ($status_code ? " ($status_code)" : '');
-		parent::__construct($error_message, $error_code);
+		$error_message = ErrorString($e, $context, $message);
+		parent::__construct($error_message, $e->getCode(), $previous);
 		$this->error_message = $error_message;
-		$this->error_code = $error_code;
+		$this->error_code = $e->getCode();
 	}
 
 }

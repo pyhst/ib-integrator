@@ -133,13 +133,13 @@ if (!function_exists('ErrorString')) {
 			return implode('', [
 				basename(dirname($e->getFile())) . '/' .
 				basename($e->getFile()),
-				($context ? "->" . $context : null),
+				"->" . ($context ?? $e->getTrace()[0]['function']),
 				':' . $e->getLine(),
 			]) .
-			($message ? ', ' . $message : null);
+			($message ? ', ' . $message : null) .
 			($e->getMessage() ? ', ' . $e->getMessage() : null);
 		}
-		return $e;
+		return $e->getMessage();
 	}
 }
 
@@ -173,13 +173,18 @@ if (!function_exists('ErrorResult')) {
  * Throw Exception
  *
  */
-// if (!function_exists('ThrowErrorException')) {
-// 	function ThrowErrorException(\Throwable $e, $context = null, $message = null)
-// 	{
-// 		$error = ErrorString($e, $context, $message);
-// 		throw new \Exception($error, $e->getCode());
-// 	}
-// }
+if (!function_exists('ThrowErrorException')) {
+	function ThrowErrorException(\Throwable $e, $context = null, $message = null)
+	{
+		$n = 1;
+		$error = "[1] " . ErrorString($e, $context, $message);
+		while($e = $e->getPrevious()) {
+			$n++;
+			$error .= " [$n] " . ErrorString($e);
+		}
+		throw new \Exception($error);
+	}
+}
 
 
 
