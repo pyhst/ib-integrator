@@ -5,7 +5,8 @@
         "bank",
         "payment-gateway",
         "payment-processing",
-        "payment-vendor"
+        "payment-vendor",
+        "qris"
     ],
     "homepage": "https://payhost.io/",
     "type": "library",

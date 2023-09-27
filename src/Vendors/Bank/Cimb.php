@@ -10,7 +10,7 @@ use IbIntegrator\Vendors\Requestor;
 use IbIntegrator\Exceptions\ErrorException;
 use IbIntegrator\Exceptions\JsonException;
 
-class Bca extends Vendor implements BankInterface
+class Cimb extends Vendor implements BankInterface
 {
 
 	public function GenerateSignature($args = [])

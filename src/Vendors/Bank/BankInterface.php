@@ -1,6 +1,6 @@
 <?php
 
-namespace IbIntegrator\Vendors;
+namespace IbIntegrator\Vendors\Bank;
 
 interface BankInterface
 {

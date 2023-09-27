@@ -2,7 +2,7 @@
 
 namespace IbIntegrator\Vendors\PaymentGateway;
 
-use IbIntegrator\Vendors\PaymentGatewayInterface;
+use IbIntegrator\Vendors\PaymentGateway\PaymentGatewayInterface;
 use IbIntegrator\Vendors\Vendor;
 use IbIntegrator\Vendors\Transaction;
 use IbIntegrator\Vendors\Requestor;
