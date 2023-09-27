@@ -28,6 +28,6 @@
     },
     "require": {
         "symfony/dotenv": "^5.4",
-        "guzzlehttp/guzzle": "6.3"
+        "guzzlehttp/guzzle": "^7.8"
     }
 }

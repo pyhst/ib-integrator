@@ -255,4 +255,14 @@ class Vendor
 		return $this->params;
 	}
 
+	public function setParam(string $key, string $value): void
+	{
+		$this->params[$key] = $value;
+	}
+
+	public function getParam(string $key): string
+	{
+		return $this->params[$key];
+	}
+
 }
