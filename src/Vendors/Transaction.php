@@ -12,6 +12,7 @@ class Transaction
 	 */
 	protected $time;
 	protected $order_id;
+	protected $transaction_id;
 	protected $reference_num;
 	protected $invoice_num;
 	protected $description;
@@ -42,10 +43,16 @@ class Transaction
 	//
 	protected $customer_userid; // Internet banking login
 	protected $transfer_method; // Disbursement
+	protected $disbursement_id;
 	protected $customer_bank_name;
 	protected $customer_bank_account_name;
 	protected $customer_bank_account_number;
 	protected $customer_bank_code;
+	protected $sender_id;
+	protected $sender_name;
+	protected $beneficiary_id;
+	protected $beneficiary_name;
+	protected $purpose_of_transaction;
 	//
 	protected $merchant_id;
 	protected $merchant_name;
@@ -103,6 +110,16 @@ class Transaction
 	public function getOrderID(): ?string
 	{
 		return $this->order_id;
+	}
+
+	public function setTransactionID(string $transaction_id): void
+	{
+		$this->transaction_id = $transaction_id;
+	}
+
+	public function getTransactionID(): ?string
+	{
+		return $this->transaction_id;
 	}
 
 	public function setReferenceNumber(string $reference_num): void
@@ -373,6 +390,16 @@ class Transaction
 		return $this->transfer_method;
 	}
 
+	public function setDisbursementID(string $disbursement_id): void
+	{
+		$this->disbursement_id = $disbursement_id;
+	}
+
+	public function getDisbursementID(): ?string
+	{
+		return $this->disbursement_id;
+	}
+
 	public function setCustomerBankName($customer_bank_name): void
 	{
 		$this->customer_bank_name = $customer_bank_name;
@@ -411,6 +438,56 @@ class Transaction
 	public function getCustomerBankCode(): ?string
 	{
 		return $this->customer_bank_code;
+	}
+
+	public function setSenderID($sender_id): void
+	{
+		$this->sender_id = $sender_id;
+	}
+
+	public function getSenderID(): ?string
+	{
+		return $this->sender_id;
+	}
+
+	public function setSenderName($sender_name): void
+	{
+		$this->sender_name = $sender_name;
+	}
+
+	public function getSenderName(): ?string
+	{
+		return $this->sender_name;
+	}
+
+	public function setBeneficiaryID($beneficiary_id): void
+	{
+		$this->beneficiary_id = $beneficiary_id;
+	}
+
+	public function getBeneficiaryID(): ?string
+	{
+		return $this->beneficiary_id;
+	}
+
+	public function setBeneficiaryName($beneficiary_name): void
+	{
+		$this->beneficiary_name = $beneficiary_name;
+	}
+
+	public function getBeneficiaryName(): ?string
+	{
+		return $this->beneficiary_name;
+	}
+
+	public function setPurposeOfTransaction($purpose_of_transaction): void
+	{
+		$this->purpose_of_transaction = $purpose_of_transaction;
+	}
+
+	public function getPurposeOfTransaction(): ?string
+	{
+		return $this->purpose_of_transaction;
 	}
 
 	//

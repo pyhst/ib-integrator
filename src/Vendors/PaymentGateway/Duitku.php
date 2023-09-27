@@ -2,13 +2,13 @@
 
 namespace IbIntegrator\Vendors\PaymentGateway;
 
-use IbIntegrator\Exceptions\ErrorException;
-use IbIntegrator\Exceptions\JsonException;
-
 use IbIntegrator\Vendors\PaymentGatewayInterface;
 use IbIntegrator\Vendors\Vendor;
 use IbIntegrator\Vendors\Transaction;
 use IbIntegrator\Vendors\Requestor;
+
+use IbIntegrator\Exceptions\ErrorException;
+use IbIntegrator\Exceptions\JsonException;
 
 class Duitku extends Vendor implements PaymentGatewayInterface
 {
@@ -389,22 +389,22 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
 					$now .
-					$transaction->getCustomerBankName() .
+					$transaction->getCustomerBankCode() .
 					$transaction->getCustomerBankAccountNumber() .
 					(int) $transaction->getAmount() .
-					$transaction->getDescription() .
+					$transaction->getPurposeOfTransaction() .
 					$this->getSecret()
 				);
 				$request['data'] = [
 					'userId' => $this->getID(),
 					'amountTransfer' => (int) $transaction->getAmount(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
-					'bankCode' => $transaction->getCustomerBankName(),
+					'bankCode' => $transaction->getCustomerBankCode(),
 					'email' => $this->getParam('DisbursementEmail'),
-					'purpose' => $transaction->getDescription(),
+					'purpose' => $transaction->getPurposeOfTransaction(),
 					'timestamp' => $now,
-					'senderId' => $transaction->getMerchantID(),
-					'senderName' => $transaction->getMerchantName(),
+					'senderId' => $transaction->getSenderID(),
+					'senderName' => $transaction->getSenderName(),
 					'signature' => $signature,
 					'custRefNumber' => $transaction->getOrderID(),
 				];
@@ -429,24 +429,24 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
 					$now .
-					$transaction->getCustomerBankName() .
+					$transaction->getCustomerBankCode() .
 					$transaction->getTransferMethod() .
 					$transaction->getCustomerBankAccountNumber() .
 					(int) $transaction->getAmount() .
-					$transaction->getDescription() .
+					$transaction->getPurposeOfTransaction() .
 					$this->getSecret()
 				);
 				$request['data'] = [
 					'userId' => $this->getID(),
 					'amountTransfer' => (int) $transaction->getAmount(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
-					'bankCode' => $transaction->getCustomerBankName(),
+					'bankCode' => $transaction->getCustomerBankCode(),
 					'email' => $this->getParam('DisbursementEmail'),
-					'purpose' => $transaction->getDescription(),
+					'purpose' => $transaction->getPurposeOfTransaction(),
 					'type' => $transaction->getTransferMethod(),
 					'timestamp' => $now,
-					'senderId' => $transaction->getMerchantID(),
-					'senderName' => $transaction->getMerchantName(),
+					'senderId' => $transaction->getSenderID(),
+					'senderName' => $transaction->getSenderName(),
 					'signature' => $signature,
 				];
 				/* // Failed
@@ -526,27 +526,27 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
 					$now .
-					$transaction->getCustomerBankName() .
+					$transaction->getCustomerBankCode() .
 					$transaction->getCustomerBankAccountNumber() .
 					$transaction->getCustomerBankAccountName() .
 					$transaction->getOrderID() .
 					(int) $transaction->getAmount() .
-					$transaction->getDescription() .
-					$transaction->getTransactionID() .
+					$transaction->getPurposeOfTransaction() .
+					$transaction->getDisbursementID() .
 					$this->getSecret()
 				);
 				$request['data'] = [
-					'disburseId' => $transaction->getTransactionID(),
+					'disburseId' => $transaction->getDisbursementID(),
 					'userId' => $this->getID(),
 					'email' => $this->getParam('DisbursementEmail'),
-					'bankCode' => $transaction->getCustomerBankName(),
+					'bankCode' => $transaction->getCustomerBankCode(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
 					'amountTransfer' => (int) $transaction->getAmount(),
 					'accountName' => $transaction->getCustomerBankAccountName(),
 					'custRefNumber' => $transaction->getOrderID(),
-					'purpose' => $transaction->getDescription(),
+					'purpose' => $transaction->getPurposeOfTransaction(),
 					'timestamp' => $now,
-					'senderName' => $transaction->getMerchantName(),
+					'senderName' => $transaction->getSenderName(),
 					'signature' => $signature,
 				];
 				/* // Success
@@ -569,26 +569,26 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
 					$now .
-					$transaction->getCustomerBankName() .
+					$transaction->getCustomerBankCode() .
 					$transaction->getTransferMethod() .
 					$transaction->getCustomerBankAccountNumber() .
 					$transaction->getCustomerBankAccountName() .
 					$transaction->getOrderID() .
 					(int) $transaction->getAmount() .
-					$transaction->getDescription() .
-					$transaction->getTransactionID() .
+					$transaction->getPurposeOfTransaction() .
+					$transaction->getDisbursementID() .
 					$this->getSecret()
 				);
 				$request['data'] = [
-					'disburseId' => $transaction->getTransactionID(),
+					'disburseId' => $transaction->getDisbursementID(),
 					'userId' => $this->getID(),
 					'email' => $this->getParam('DisbursementEmail'),
-					'bankCode' => $transaction->getCustomerBankName(),
+					'bankCode' => $transaction->getCustomerBankCode(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
 					'amountTransfer' => (int) $transaction->getAmount(),
 					'accountName' => $transaction->getCustomerBankAccountName(),
 					'custRefNumber' => $transaction->getOrderID(),
-					'purpose' => $transaction->getDescription(),
+					'purpose' => $transaction->getPurposeOfTransaction(),
 					'type' => $transaction->getTransferMethod(),
 					'timestamp' => $now,
 					'signature' => $signature,
@@ -653,11 +653,11 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			$signature = hash('sha256',
 				$this->getParam('DisbursementEmail') .
 				$now .
-				$transaction->getTransactionID() .
+				$transaction->getDisbursementID() .
 				$this->getSecret()
 			);
 			$request['data'] = [
-				'disburseId' => $transaction->getTransactionID(),
+				'disburseId' => $transaction->getDisbursementID(),
 				'userId' => $this->getID(),
 				'email' => $this->getParam('DisbursementEmail'),
 				'timestamp' => $now,
