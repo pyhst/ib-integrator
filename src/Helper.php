@@ -149,7 +149,7 @@ if (!function_exists('ErrorString')) {
  *
  */
 if (!function_exists('ErrorResult')) {
-	function ErrorResult(\Throwable $e, $context = null, $message = null): array
+	function ErrorResult(\Throwable $e, $context = null, $message = null, $timer_start = null): array
 	{
 		if (
 			(!empty($_ENV['APP_DEBUG']) && $_ENV['APP_DEBUG'] == 'true')
@@ -157,8 +157,7 @@ if (!function_exists('ErrorResult')) {
 			$debug = [
 				'_debug' => [
 					'error_message' => ErrorString($e, $context ? $context . '()' : '', $message),
-					'execution_time_ms' => round((microtime(true) - TIMER_START) * 1000, 2),
-				],
+				] + ($timer_start ? ['execution_time_ms' => round((microtime(true) - $timer_start) * 1000, 2)] : []),
 			];
 		}
 		return [
