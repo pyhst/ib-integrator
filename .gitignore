@@ -31,7 +31,6 @@ vendor/
 examples/_log
 .env
 .env.backup
-.env.example
 *.env
 
 # Ignored files #
