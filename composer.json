@@ -1,5 +1,5 @@
 {
-    "name": "essefx/ib-integrator",
+    "name": "pyhst/ib-integrator",
     "description": "Integrator library for vendors API",
     "keywords": [
         "bank",
@@ -14,8 +14,8 @@
     "version": "1.0.1",
     "authors": [
         {
-            "name": "essefx",
-            "email": "essefx@gmail.com"
+            "name": "Payhost",
+            "email": "it@payhost.io"
         }
     ],
     "minimum-stability": "stable",

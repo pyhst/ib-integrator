@@ -1,1 +1,76 @@
-/vendor/
+/.phpunit.cache
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
+
+
+
+# Ignored folder #
+##################
+.history/
+.vscode/
+_/
+cert/
+public/
+storage/
+vendor/
+examples/_log
+.env
+.env.backup
+.env.example
+*.env
+
+# Ignored files #
+#################
+*.bak
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.tgz
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
