@@ -242,6 +242,8 @@ if (!function_exists('IfIPInRange')) {
 	}
 }
 
+
+
 /**
  *
  * Luhn
@@ -276,5 +278,43 @@ if (!function_exists('CheckLuhn')) {
 		} else {
 			return $segments[0] . $checksum;
 		}
+	}
+}
+
+if (!function_exists('ValidateLuhn')) {
+	function ValidateLuhn(string $number): bool
+	{
+		$sum = 0;
+		$flag = 0;
+		for ($i = strlen($number) - 1; $i >= 0; $i--) {
+			$add = $flag++ & 1 ? $number[$i] * 2 : $number[$i];
+			$sum += $add > 9 ? $add - 9 : $add;
+		}
+		return $sum % 10 === 0;
+	}
+}
+
+if (!function_exists('CalculateLuhn')) {
+	function CalculateLuhn($number)
+	{
+		$sumTable = array(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), array(0, 2, 4, 6, 8, 1, 3, 5, 7, 9));
+		$length = strlen($number);
+		$sum = 0;
+		$flip = 1;
+		for ($i = $length-1; $i >= 0; --$i) {
+			$sum += $sumTable[$flip++ & 0x1][$number[$i]]; // Sum digits (last one is check digit, which is not in parameter)
+		}
+		$sum *= 9; // Multiply by 9
+		return (int)substr($sum, -1, 1); // Last digit of sum is check digit
+	}
+}
+
+if (!function_exists('CheckThenAddLuhn')) {
+	function CheckThenAddLuhn($number)
+	{
+		if (!ValidateLuhn($number)) {
+			return $number . CalculateLuhn($number);
+		}
+		return $number;
 	}
 }
