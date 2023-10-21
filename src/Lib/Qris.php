@@ -691,8 +691,7 @@ class Qris
 						'id_root_name' => $id_roots[$id_root]['name'],
 						'data' => $fetch,
 						'length' => $pos_len,
-						'fetch' => $fetch_str,
-						// 'fetch_string' => $fetch_str,
+						'fetch_string' => $fetch_str,
 						'fetch_array' => $fetch_array,
 						// 'str_remains' => $str_remains,
 					];
@@ -715,8 +714,7 @@ class Qris
 		$id_root_63 = '';
 		foreach ($qris_arr as $arr) {
 			if ($arr['id_root'] != '63') {
-				$qris_string .= $arr['fetch'];
-				// $qris_string .= $arr['fetch_string'];
+				$qris_string .= $arr['fetch_string'];
 			} else {
 				$id_root_63 = $arr['data'];
 			}
