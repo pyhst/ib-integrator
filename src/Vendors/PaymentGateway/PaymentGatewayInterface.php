@@ -2,6 +2,8 @@
 
 namespace IbIntegrator\Vendors\PaymentGateway;
 
+use IbIntegrator\Vendors\Transaction;
+
 interface PaymentGatewayInterface
 {
 

@@ -60,6 +60,10 @@ class GuzzleHttpClient
 					$type = 'json';
 					break;
 			}
+			// Overide
+			if (!empty($opt['as_json']) && $opt['as_json']) {
+				$type = 'json';
+			}
 			// Request options
 			$options = array_merge($opt, [
 				'headers' => $headers,
