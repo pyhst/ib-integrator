@@ -716,7 +716,7 @@ class Qris
 			if ($arr['id_root'] != '63') {
 				$qris_string .= $arr['fetch_string'];
 			} else {
-				$id_root_63 = $arr['data'];
+				$id_root_63 = $arr['fetch_data'];
 			}
 		}
 		$citt = strtoupper(dechex((new Crc16)->CCITT_FALSE($qris_string . '6304')));
