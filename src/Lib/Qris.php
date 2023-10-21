@@ -689,8 +689,8 @@ class Qris
 					$item = [
 						'id_root' => $id_root,
 						'id_root_name' => $id_roots[$id_root]['name'],
-						'data' => $fetch,
-						'length' => $pos_len,
+						'fetch_data' => $fetch,
+						'fetch_length' => $pos_len,
 						'fetch_string' => $fetch_str,
 						'fetch_array' => $fetch_array,
 						// 'str_remains' => $str_remains,
