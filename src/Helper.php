@@ -1,7 +1,17 @@
 <?php
 
+$env = __DIR__ .'/../.env';
+if (file_exists($env)) {
+	$dotenv = new Symfony\Component\Dotenv\Dotenv();
+	$dotenv->load($env);
+}
 
-/**
+define('APP_DEBUG', $_ENV['APP_DEBUG'] ?? false);
+define('TIMER_START', microtime(true));
+
+
+
+/** /*------------------------------------------------------------------  // Strings   -------------------------------------------------------*
  *
  * Rupiah string
  *
@@ -15,7 +25,7 @@ if (!function_exists('toRupiah')) {
 
 
 
-/**
+/** /*------------------------------------------------------------------  // URLs   -------------------------------------------------------*
  *
  * Clean URL
  *
@@ -26,7 +36,6 @@ if (!function_exists('CleanURL')) {
 		return preg_replace('/([^:])(\/{2,})/', '$1/', $url);
 	}
 }
-
 /**
  *
  * Check existence of URL
@@ -36,8 +45,12 @@ if (!function_exists('CheckURL')) {
 	function CheckURL(string $url)
 	{
 		$headers = @get_headers($url);
-		if (!empty($headers) && strpos($headers[0], '200')) {
-			return true;
+		if (!empty($headers)) {
+			if (strpos($headers[0], '200') !== false
+				|| strpos($headers[0], '405') !== false
+			) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -45,7 +58,7 @@ if (!function_exists('CheckURL')) {
 
 
 
-/**
+/** /*------------------------------------------------------------------  // Encodings   -------------------------------------------------------*
  *
  * Check if base64_encoded
  *
@@ -60,7 +73,9 @@ if (!function_exists('CheckBase64')) {
 	}
 }
 
-/**
+
+
+/** /*------------------------------------------------------------------  // Arrays   -------------------------------------------------------*
  *
  * Lazy obj to arr
  *
@@ -71,10 +86,25 @@ if (!function_exists('ObjectToArray')) {
 		return json_decode(json_encode($object), true);
 	}
 }
-
-
-
 /**
+ *
+ * Find value by key in multidimension array
+ *
+ */
+if (!function_exists('ArrayValueRecursive')) {
+	function ArrayValueRecursive($key, array $arr)
+	{
+		$val = array();
+		array_walk_recursive($arr, function ($v, $k) use ($key, &$val) {
+			if ($k == $key) array_push($val, $v);
+		});
+		return count($val) > 1 ? $val : array_pop($val);
+	}
+}
+
+
+
+/** /*------------------------------------------------------------------  // JSONs   -------------------------------------------------------*
  *
  * Check if is JSON
  *
@@ -85,10 +115,9 @@ if (!function_exists('IsJSON')) {
 		return is_string($string) && is_array(json_decode($string, true)) ? true : false;
 	}
 }
-
 /**
  *
- * Check if is JSON
+ * Pretty JSON
  *
  */
 if (!function_exists('PrettyJSON')) {
@@ -100,7 +129,6 @@ if (!function_exists('PrettyJSON')) {
 		return $string;
 	}
 }
-
 /**
  *
  * Return response in JSON
@@ -121,7 +149,7 @@ if (!function_exists('JSONResult')) {
 
 
 
-/**
+/** /*------------------------------------------------------------------  // Exceptions   -------------------------------------------------------*
  *
  * Inform Exception error string
  *
@@ -142,18 +170,15 @@ if (!function_exists('ErrorString')) {
 		return $e->getMessage();
 	}
 }
-
 /**
  *
  * Return throwable Error Res
  *
  */
 if (!function_exists('ErrorResult')) {
-	function ErrorResult(\Throwable $e, $context = null, $message = null, $timer_start = null): array
+	function ErrorResult(\Throwable $e, $context = null, $message = null, $timer_start = TIMER_START): array
 	{
-		if (
-			(!empty($_ENV['APP_DEBUG']) && $_ENV['APP_DEBUG'] == 'true')
-		) {
+		if (APP_DEBUG == true) {
 			$debug = [
 				'_debug' => [
 					'error_message' => ErrorString($e, $context ? $context . '()' : '', $message),
@@ -166,7 +191,6 @@ if (!function_exists('ErrorResult')) {
 		] + ($debug ?? []);
 	}
 }
-
 /**
  *
  * Throw Exception
@@ -184,9 +208,6 @@ if (!function_exists('ThrowErrorException')) {
 		throw new \Exception($error);
 	}
 }
-
-
-
 /**
  *
  * Argument validator
@@ -203,23 +224,9 @@ if (!function_exists('ValidateArgs')) {
 	}
 }
 
-/**
- *
- * Find value by key in multidimension array
- *
- */
-if (!function_exists('ArrayValueRecursive')) {
-	function ArrayValueRecursive($key, array $arr)
-	{
-		$val = array();
-		array_walk_recursive($arr, function ($v, $k) use ($key, &$val) {
-			if ($k == $key) array_push($val, $v);
-		});
-		return count($val) > 1 ? $val : array_pop($val);
-	}
-}
 
-/**
+
+/** /*------------------------------------------------------------------  // IPs   -------------------------------------------------------*
  *
  * Check if IP is in range
  *
@@ -244,56 +251,110 @@ if (!function_exists('IfIPInRange')) {
 
 
 
+/** /*------------------------------------------------------------------  // Dates   -------------------------------------------------------*
+ *
+ * Turns Ym date into code
+ *
+ */
+if (!function_exists('YMDateToCode')) {
+	function YMDateToCode($timestamp_or_stringtoreverse = null, $reverse = 0, $base_year = 2020)
+	{
+		if (!$reverse) {
+			// Get year
+			$time = \Carbon\Carbon::createFromTimestamp($timestamp_or_stringtoreverse);
+			$y = (int) ($time->year - $base_year);
+			$ya = NumberToAlphabet($y);
+			$yb = str_pad($ya, 2, '0', STR_PAD_LEFT);
+			// Get month
+			$ma = NumberToAlphabet($time->month);
+			return [
+				'timestamp_or_stringtoreverse' => $timestamp_or_stringtoreverse,
+				'origin' => $time->format('Ym'),
+				'formatted' => $yb . $ma,
+			];
+			// return $yb . $ma;
+		} else {
+			// Reverse
+			$s = substr($timestamp_or_stringtoreverse, 0, 3); // Get first 3 digit
+			$y = substr($s, 0, 2); // First 2 digit of 3 is Y
+			$m = substr($s, -1, 1); // Last 1 digit of 3 is M
+			$a = substr($timestamp_or_stringtoreverse, 3, 999); // Get additional string codes
+			try {
+				$d = \Carbon\Carbon::createFromFormat('Ym',
+					(int) (AlphabetToNumber( preg_replace('/[^a-z]/i','', $y) ) + $base_year) .
+					str_pad(AlphabetToNumber($m), 2, 0, STR_PAD_LEFT)
+				);
+			} catch (\Throwable $e) {
+				return [
+					'timestamp_or_stringtoreverse' => null,
+					'origin' => null,
+					'adds' => null,
+					'formatted' => null,
+				];
+			}
+			return [
+				'timestamp_or_stringtoreverse' => $timestamp_or_stringtoreverse,
+				'origin' => $d->format('Ym'),
+				// 's' => $s,
+				// 'y' => $y,
+				// 'm' => $m,
+				'adds' => $a,
+				'formatted' => $timestamp_or_stringtoreverse,
+			];
+			// return $d->format('Ym');
+		}
+	}
+}
 /**
+ *
+ * Translate number into alphabet
+ *
+ */
+if (!function_exists('NumberToAlphabet')) {
+	function NumberToAlphabet($number)
+	{
+		$number = intval($number);
+		if ($number <= 0) {
+			return '';
+		}
+		$alphabet = '';
+		while ($number != 0) {
+			$p = ($number - 1) % 26;
+			$number = intval(($number - $p) / 26);
+			$alphabet = chr(65 + $p) . $alphabet;
+		}
+		return $alphabet;
+	}
+}
+/**
+ *
+ * Translate alphabet into number
+ *
+ */
+if (!function_exists('AlphabetToNumber')) {
+	function AlphabetToNumber($string)
+	{
+		$string = strtoupper($string);
+		$length = strlen($string);
+		$number = 0;
+		$level = 1;
+		while ($length >= $level) {
+			$char = $string[$length - $level];
+			$c = ord($char) - 64;
+			$number += $c * (26 ** ($level - 1));
+			$level++;
+		}
+		return $number;
+	}
+}
+
+
+
+/** /*------------------------------------------------------------------  // Luhns   -------------------------------------------------------*
  *
  * Luhn
  *
  */
-if (!function_exists('CheckLuhn')) {
-	function CheckLuhn($card, $create = false)
-	{
-		$segments = str_split($card, 15);
-		$digits = str_split($segments[0], 1);
-		foreach ($digits as $k => $d) {
-			if ($k % 2 == 0) {
-				$digits[$k] *= 2;
-				if (strlen($digits[$k]) > 1) {
-					$split = str_split($digits[$k]);
-					$digits[$k] = array_sum($split);
-				}
-			}
-		}
-		$digits = array_sum($digits) * 9;
-		$digits = str_split($digits);
-		$checksum = $digits[max(array_keys($digits))];
-		if ($create == false) {
-			if (!isset($segments[1])) {
-				return "Invalid input length.";
-			}
-			if ($checksum == $segments[1]) {
-				return 1;
-			} else {
-				return 0;
-			}
-		} else {
-			return $segments[0] . $checksum;
-		}
-	}
-}
-
-if (!function_exists('ValidateLuhn')) {
-	function ValidateLuhn(string $number): bool
-	{
-		$sum = 0;
-		$flag = 0;
-		for ($i = strlen($number) - 1; $i >= 0; $i--) {
-			$add = $flag++ & 1 ? $number[$i] * 2 : $number[$i];
-			$sum += $add > 9 ? $add - 9 : $add;
-		}
-		return $sum % 10 === 0;
-	}
-}
-
 if (!function_exists('CalculateLuhn')) {
 	function CalculateLuhn($number)
 	{
@@ -308,12 +369,32 @@ if (!function_exists('CalculateLuhn')) {
 		return (int)substr($sum, -1, 1); // Last digit of sum is check digit
 	}
 }
-
+if (!function_exists('ValidateLuhn')) {
+	function ValidateLuhn(string $number): bool
+	{
+		$sum = 0;
+		$flag = 0;
+		for ($i = strlen($number) - 1; $i >= 0; $i--) {
+			$add = $flag++ & 1 ? $number[$i] * 2 : $number[$i];
+			$sum += $add > 9 ? $add - 9 : $add;
+		}
+		return $sum % 10 === 0;
+	}
+}
 if (!function_exists('CheckThenAddLuhn')) {
 	function CheckThenAddLuhn($number)
 	{
 		if (!ValidateLuhn($number)) {
 			return $number . CalculateLuhn($number);
+		}
+		return $number;
+	}
+}
+if (!function_exists('CheckThenRemoveLuhn')) {
+	function CheckThenRemoveLuhn($number)
+	{
+		if (ValidateLuhn($number)) {
+			return substr($number, 0, (strlen($number) - 1));
 		}
 		return $number;
 	}
