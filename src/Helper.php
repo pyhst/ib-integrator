@@ -384,7 +384,7 @@ if (!function_exists('ValidateLuhn')) {
 if (!function_exists('CheckThenAddLuhn')) {
 	function CheckThenAddLuhn($number)
 	{
-		if (!ValidateLuhn($number)) {
+		if (isset($number) && !ValidateLuhn($number)) {
 			return $number . CalculateLuhn($number);
 		}
 		return $number;
@@ -393,7 +393,7 @@ if (!function_exists('CheckThenAddLuhn')) {
 if (!function_exists('CheckThenRemoveLuhn')) {
 	function CheckThenRemoveLuhn($number)
 	{
-		if (ValidateLuhn($number)) {
+		if (isset($number) && ValidateLuhn($number)) {
 			return substr($number, 0, (strlen($number) - 1));
 		}
 		return $number;
