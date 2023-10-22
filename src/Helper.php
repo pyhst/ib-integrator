@@ -6,8 +6,8 @@ if (file_exists($env)) {
 	$dotenv->load($env);
 }
 
-define('APP_DEBUG', $_ENV['APP_DEBUG'] ?? false);
-define('TIMER_START', microtime(true));
+define('IB_HELPER_APP_DEBUG', $_ENV['APP_DEBUG'] ?? false);
+define('IB_HELPER_TIMER_START', microtime(true));
 
 
 
@@ -176,9 +176,9 @@ if (!function_exists('ErrorString')) {
  *
  */
 if (!function_exists('ErrorResult')) {
-	function ErrorResult(\Throwable $e, $context = null, $message = null, $timer_start = TIMER_START): array
+	function ErrorResult(\Throwable $e, $context = null, $message = null, $timer_start = IB_HELPER_TIMER_START): array
 	{
-		if (APP_DEBUG == true) {
+		if (IB_HELPER_APP_DEBUG == true) {
 			$debug = [
 				'_debug' => [
 					'error_message' => ErrorString($e, $context ? $context . '()' : '', $message),
