@@ -115,19 +115,19 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'/api/v1/merchants/balance'
 			);
 			$request['data'] = [
-				'transactionId' => $transaction->getOrderID(),
+				'transactionId' => $transaction->getTransactionID(),
 			];
-			$permitted_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			$rand = substr(str_shuffle($permitted_chars), 0, 32);
+			// $permitted_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			// $rand = substr(str_shuffle($permitted_chars), 0, 32);
 			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Accept' => 'application/json',
 				'Authorization' => 'Bearer ' . $this->getToken(),
-				'A-Correlation-ID' => $rand,
+				// 'A-Correlation-ID' => $rand,
+				'A-Correlation-ID' => $transaction->getTransactionID(),
 				'A-Merchant-Code' => $this->getMerchantCode(),
 			];
 			$request['opt'] = [
-				'as_json' => true,
 				'timeout' => 60,
 				'to_json' => true,
 			];
@@ -140,7 +140,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					!empty($content->code)
 					// && $content->code == "200"
 					&& !empty($content->message)
-					&& trim(strtoupper($content->message)) == "OK"
+					// && trim(strtoupper($content->message)) == "OK"
 				) {
 					/* // Success
 						{
@@ -185,7 +185,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'/api/v1/bank-disbursements/beneficiary'
 			);
 			$request['data'] = [
-				'transactionId' => $transaction->getOrderID(),
+				'transactionId' => $transaction->getTransactionID(),
 				'phoneNumber' => $transaction->getCustomerPhone(),
 				'customerDetails' => [
 					'ipAddress' => $transaction->getIPAddress(),
@@ -195,13 +195,14 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					'bankCode' => $transaction->getCustomerBankCode(),
 				]
 			];
-			$permitted_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			$rand = substr(str_shuffle($permitted_chars), 0, 32);
+			// $permitted_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			// $rand = substr(str_shuffle($permitted_chars), 0, 32);
 			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Accept' => 'application/json',
 				'Authorization' => 'Bearer ' . $this->getToken(),
-				'A-Correlation-ID' => $rand,
+				// 'A-Correlation-ID' => $rand,
+				'A-Correlation-ID' => $transaction->getTransactionID(),
 				'A-Merchant-Code' => $this->getMerchantCode(),
 				'A-Latitude' => '-6.200000',
 				'A-Longitude' => '-106.816666',
@@ -220,7 +221,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					!empty($content->code)
 					// && $content->code == "202"
 					&& !empty($content->message)
-					&& trim(strtoupper($content->message)) == "OK"
+					// && trim(strtoupper($content->message)) == "OK"
 				) {
 					/* // Success
 						{
@@ -243,7 +244,6 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					$res = [
 						'status' => '000',
 						'data' => (array) $content,
-						'request' => (array) $request,
 					];
 					$status_code = 200;
 				} else {
@@ -261,102 +261,35 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 	public function FundTransfer(Transaction $transaction)
 	{
 		try {
-			$now = round(microtime(true) * 1000);
-			if (!$transaction->getTransferMethod()) { /*--------------------------------------  // Online transfer method  -------------------------------------------------------*/
-				$request['url'] = CleanURL(
-					$this->getHostURL() .
-					'/webapi/api/disbursement/transfer'
-				);
-				$signature = hash('sha256',
-					$this->getParam('DisbursementEmail') .
-					$now .
-					$transaction->getCustomerBankCode() .
-					$transaction->getCustomerBankAccountNumber() .
-					$transaction->getCustomerBankAccountName() .
-					$transaction->getOrderID() .
-					(int) $transaction->getAmount() .
-					$transaction->getPurposeOfTransaction() .
-					$transaction->getDisbursementID() .
-					$this->getSecret()
-				);
-				$request['data'] = [
-					'disburseId' => $transaction->getDisbursementID(),
-					'userId' => $this->getID(),
-					'email' => $this->getParam('DisbursementEmail'),
-					'bankCode' => $transaction->getCustomerBankCode(),
-					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
-					'amountTransfer' => (int) $transaction->getAmount(),
-					'accountName' => $transaction->getCustomerBankAccountName(),
-					'custRefNumber' => $transaction->getOrderID(),
-					'purpose' => $transaction->getPurposeOfTransaction(),
-					'timestamp' => $now,
-					'senderName' => $transaction->getSenderName(),
-					'signature' => $signature,
-				];
-				/* // Success
-					{
-						"email": "dev@np.co.id",
-						"bankCode": "014",
-						"bankAccount": "8760673566",
-						"amountTransfer": 10000.0,
-						"accountName": "Test Account",
-						"custRefNumber": "000000089001",
-						"responseCode": "00",
-						"responseDesc": "Success"
-					}
-				*/
-			} else { /*--------------------------------------  // For other transfer method (LLG, RTGS, H2H or BIFAST)  -------------------------------------------------------*/
-				$request['url'] = CleanURL(
-					$this->getHostURL() .
-					'/webapi/api/disbursement/transferclearing'
-				);
-				$signature = hash('sha256',
-					$this->getParam('DisbursementEmail') .
-					$now .
-					$transaction->getCustomerBankCode() .
-					$transaction->getTransferMethod() .
-					$transaction->getCustomerBankAccountNumber() .
-					$transaction->getCustomerBankAccountName() .
-					$transaction->getOrderID() .
-					(int) $transaction->getAmount() .
-					$transaction->getPurposeOfTransaction() .
-					$transaction->getDisbursementID() .
-					$this->getSecret()
-				);
-				$request['data'] = [
-					'disburseId' => $transaction->getDisbursementID(),
-					'userId' => $this->getID(),
-					'email' => $this->getParam('DisbursementEmail'),
-					'bankCode' => $transaction->getCustomerBankCode(),
-					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
-					'amountTransfer' => (int) $transaction->getAmount(),
-					'accountName' => $transaction->getCustomerBankAccountName(),
-					'custRefNumber' => $transaction->getOrderID(),
-					'purpose' => $transaction->getPurposeOfTransaction(),
-					'type' => $transaction->getTransferMethod(),
-					'timestamp' => $now,
-					'signature' => $signature,
-				];
-				/* // Success
-					{
-						"email": "dev@np.co.id",
-						"bankCode": "014",
-						"bankAccount": "8760673566",
-						"amountTransfer": 10000.0,
-						"accountName": "Test Account",
-						"custRefNumber": "000000089001",
-						"responseCode": "00",
-						"responseDesc": "Success"
-					}
-				*/
-			}
-			$request['headers'] = [[
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				'/api/v1/bank-disbursements/disbursement'
+			);
+			$request['data'] = [
+				'transactionId' => $transaction->getTransactionID(),
+				'customerId' => $transaction->getCustomerID(),
+				'beneficiaryId' => $transaction->getBeneficiaryID(),
+				'amount' => (string) $transaction->getAmount() . '.00',
+				'currency' => $transaction->getCurrency(),
+				'remark' => $transaction->getDescription(),
+			];
+			// $permitted_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			// $rand = substr(str_shuffle($permitted_chars), 0, 32);
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
-				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+				'Accept' => 'application/json',
+				'Authorization' => 'Bearer ' . $this->getToken(),
+				// 'A-Correlation-ID' => $rand,
+				'A-Correlation-ID' => $transaction->getTransactionID(),
+				'A-Merchant-Code' => $this->getMerchantCode(),
+				'A-Latitude' => '-6.200000',
+				'A-Longitude' => '-106.816666',
+				'A-IP-Address' => $transaction->getIPAddress(),
+			];
 			$request['opt'] = [
-				'to_json' => true,
+				'as_json' => true,
 				'timeout' => 60,
+				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
 			$response = (array) $post['response'];
@@ -364,10 +297,10 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					!empty($content->responseCode)
-					&& $content->responseCode == "00"
-					&& !empty($content->responseDesc)
-					&& trim(strtoupper($content->responseDesc)) == "SUCCESS"
+					!empty($content->code)
+					// && $content->code == "00"
+					&& !empty($content->message)
+					// && trim(strtoupper($content->message)) == "SUCCESS"
 				) {
 					$res = [
 						'status' => '000',
@@ -389,53 +322,45 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 	public function CheckFundTransferStatus(Transaction $transaction)
 	{
 		try {
-			$now = round(microtime(true) * 1000);
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/webapi/api/disbursement/inquirystatus'
-			);
-			$signature = hash('sha256',
-				$this->getParam('DisbursementEmail') .
-				$now .
-				$transaction->getDisbursementID() .
-				$this->getSecret()
+				'/api/v1/bank-disbursements/status/' . $transaction->getTransactionID()
 			);
 			$request['data'] = [
-				'disburseId' => $transaction->getDisbursementID(),
-				'userId' => $this->getID(),
-				'email' => $this->getParam('DisbursementEmail'),
-				'timestamp' => $now,
-				'signature' => $signature,
+				'transactionId' => $transaction->getTransactionID(),
+				'transactionReferenceNumber' => $transaction->getReferenceNumber(),
+				'beneficiaryId' => $transaction->getBeneficiaryID(),
+				'customerId' => $transaction->getCustomerID(),
 			];
-			$request['headers'] = [[
+			// $permitted_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			// $rand = substr(str_shuffle($permitted_chars), 0, 22);
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
-				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
-			$request['opt'] = [
-				'to_json' => true,
-				'timeout' => 60,
+				'Accept' => 'application/json',
+				'Authorization' => 'Bearer ' . $this->getToken(),
+				// 'A-Correlation-ID' => $rand,
+				'A-Correlation-ID' => $transaction->getTransactionID(),
+				'A-Merchant-Code' => $this->getMerchantCode(),
+				'A-Latitude' => '-6.200000',
+				'A-Longitude' => '-106.816666',
+				'A-IP-Address' => $transaction->getIPAddress(),
 			];
-			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			$request['opt'] = [
+				'timeout' => 60,
+				'to_json' => true,
+			];
+			$get = $this->DoRequest('GET', $request);
+			$response = (array) $get['response'];
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					!empty($content->responseCode)
-					&& $content->responseCode == "00"
-					&& !empty($content->responseDesc)
-					&& trim(strtoupper($content->responseDesc)) == "SUCCESS"
+					!empty($content->code)
+					// && $content->code == "00"
+					&& !empty($content->message)
+					// && trim(strtoupper($content->message)) == "SUCCESS"
 				) {
 					/* // Success
-						{
-							"bankCode": "014",
-							"bankAccount": "8760673566",
-							"amountTransfer": 10000.00,
-							"accountName": "Test Account",
-							"custRefNumber": "000000089056",
-							"responseCode": "00",
-							"responseDesc": "Success"
-						}
 					*/
 					$res = [
 						'status' => '000',
@@ -456,7 +381,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 
 	public function DisbursementCallback($request)
 	{
-
+		//
 	}
 
 }
