@@ -37,7 +37,7 @@ try {
 	*/
 	$vendor->setToken(json_decode($response['content'])->data->accessToken);
 } catch (\Throwable $e) {
-	echo ErrorString($e);
+	echo ErrorToString($e);
 }
 
 
@@ -73,7 +73,7 @@ try {
 // 		}
 // 	*/
 // } catch (\Throwable $e) {
-// 	echo ErrorString($e);
+// 	echo ErrorToString($e);
 // }
 
 
@@ -113,7 +113,7 @@ try {
 // 		}
 // 	*/
 // } catch (\Throwable $e) {
-// 	echo ErrorString($e);
+// 	echo ErrorToString($e);
 // }
 
 
@@ -136,7 +136,7 @@ try {
 	/* Success
 	*/
 } catch (\Throwable $e) {
-	echo ErrorString($e);
+	echo ErrorToString($e);
 }
 
 
@@ -155,7 +155,7 @@ try {
 // 	/* Success
 // 	*/
 // } catch (\Throwable $e) {
-// 	echo ErrorString($e);
+// 	echo ErrorToString($e);
 // }
 
 
@@ -182,7 +182,7 @@ try {
 // 	/* Success
 // 	*/
 // } catch (\Throwable $e) {
-// 	echo ErrorString($e);
+// 	echo ErrorToString($e);
 // }
 
 

@@ -70,7 +70,7 @@ trait Requestor
 
 	public function ThrowErrorException(\Throwable $e, $context = null, $message = null, $previous = null)
 	{
-		$error = ErrorString($e, $context, $message);
+		$error = ErrorToString($e, $context, $message);
 		throw new \Exception($error, $e->getCode(), $previous);
 	}
 

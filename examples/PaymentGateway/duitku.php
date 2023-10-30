@@ -43,7 +43,7 @@ $vendor->setParams([
 // 		}
 // 	*/
 // } catch (\Throwable $e) {
-// 	echo ErrorString($e);
+// 	echo ErrorToString($e);
 // }
 
 
@@ -57,7 +57,7 @@ $vendor->setParams([
 // 	/* Success
 // 	*/
 // } catch (\Throwable $e) {
-// 	echo ErrorString($e);
+// 	echo ErrorToString($e);
 // }
 
 
@@ -83,7 +83,7 @@ $vendor->setParams([
 // 	/* Success
 // 	*/
 // } catch (\Throwable $e) {
-// 	echo ErrorString($e);
+// 	echo ErrorToString($e);
 // }
 
 
@@ -96,7 +96,7 @@ try {
 	/* Success
 	*/
 } catch (\Throwable $e) {
-	echo ErrorString($e);
+	echo ErrorToString($e);
 }
 
 

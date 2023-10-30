@@ -154,20 +154,39 @@ if (!function_exists('JSONResult')) {
  * Inform Exception error string
  *
  */
-if (!function_exists('ErrorString')) {
-	function ErrorString(\Throwable $e, $context = null, $message = null): string
+if (!function_exists('ErrorToString')) {
+	function ErrorToString(\Throwable $e, $context = null, $message = null): string
 	{
 		if ($e instanceof \Exception) {
-			return implode('', [
-				basename(dirname($e->getFile())) . '/' .
-				basename($e->getFile()),
-				"->" . ($context ?? $e->getTrace()[0]['function']),
-				':' . $e->getLine(),
-			]) .
-			($message ? ', ' . $message : null) .
-			($e->getMessage() ? ', ' . $e->getMessage() : null);
+			return implode(', ', array_filter([
+				$e->getMessage(),
+				$context,
+				$message,
+			]));
 		}
-		return $e->getMessage();
+	}
+}
+if (!function_exists('ErrorToTrace')) {
+	function ErrorToTrace(\Throwable $e): array
+	{
+		if ($e instanceof \Exception) {
+			$errors = [];
+			$limit = 5;
+			$n = 0;
+			foreach ($e->getTrace() as $each_trace) {
+				$n++;
+				$errors[] = implode('', array_filter([
+					basename(dirname($each_trace['file'])) . '/' . basename($each_trace['file']),
+					"->" . $each_trace['function'] . "()",
+					':' . $each_trace['line'],
+					// ', ' . $e->getMessage(),
+				]));
+				if ($n == $limit) {
+					break;
+				}
+			}
+			return $errors;
+		}
 	}
 }
 /**
@@ -175,14 +194,17 @@ if (!function_exists('ErrorString')) {
  * Return throwable Error Res
  *
  */
-if (!function_exists('ErrorResult')) {
-	function ErrorResult(\Throwable $e, $context = null, $message = null, $timer_start = IB_HELPER_TIMER_START): array
+if (!function_exists('ErrorToResult')) {
+	function ErrorToResult(\Throwable $e, $context = null, $message = null, $timer_start = IB_HELPER_TIMER_START): array
 	{
 		if (IB_HELPER_APP_DEBUG == true) {
 			$debug = [
 				'_debug' => [
-					'error_message' => ErrorString($e, $context ? $context . '()' : '', $message),
-				] + ($timer_start ? ['execution_time_ms' => round((microtime(true) - $timer_start) * 1000, 2)] : []),
+					'error_message' => ErrorToString($e, $context, $message),
+					'error_trace' => ErrorToTrace($e),
+				]
+				+ ['execution_time_ms' => round((microtime(true) - $timer_start) * 1000, 2)]
+				// + ['error_trace_c' => $e->getTrace()]
 			];
 		}
 		return [
@@ -200,10 +222,10 @@ if (!function_exists('ThrowErrorException')) {
 	function ThrowErrorException(\Throwable $e, $context = null, $message = null)
 	{
 		$n = 1;
-		$error = "[1] " . ErrorString($e, $context, $message);
+		$error = "[1] " . ErrorToString($e, $context, $message);
 		while($e = $e->getPrevious()) {
 			$n++;
-			$error .= " [$n] " . ErrorString($e);
+			$error .= " [$n] " . ErrorToString($e);
 		}
 		throw new \Exception($error);
 	}

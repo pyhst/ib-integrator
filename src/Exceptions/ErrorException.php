@@ -29,7 +29,7 @@ class ErrorException extends \Exception implements ExceptionInterface
 		if (!$e) {
 			throw new $this('Unknown ' . get_class($this));
 		}
-		$error_message = ErrorString($e, $context, $message);
+		$error_message = ErrorToString($e, $context, $message);
 		parent::__construct($error_message, $e->getCode(), $previous);
 		$this->error_message = $error_message;
 		$this->error_code = $e->getCode();
