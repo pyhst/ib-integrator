@@ -18,6 +18,7 @@ class Transaction
 	protected $description;
 	protected $remark;
 	protected $items;
+	protected $correlation_id;
 	//
 	protected $currency;
 	protected $currency_code;
@@ -120,6 +121,16 @@ class Transaction
 	public function getTransactionID(): ?string
 	{
 		return $this->transaction_id;
+	}
+
+	public function setCorrelationID(string $correlation_id): void
+	{
+		$this->correlation_id = $correlation_id;
+	}
+
+	public function getCorrelationID(): ?string
+	{
+		return $this->correlation_id;
 	}
 
 	public function setReferenceNumber(string $reference_num): void
