@@ -164,6 +164,7 @@ if (!function_exists('ErrorToString')) {
 				$message,
 			]));
 		}
+		return '';
 	}
 }
 if (!function_exists('ErrorToTrace')) {
@@ -187,6 +188,7 @@ if (!function_exists('ErrorToTrace')) {
 			}
 			return $errors;
 		}
+		return [];
 	}
 }
 /**
