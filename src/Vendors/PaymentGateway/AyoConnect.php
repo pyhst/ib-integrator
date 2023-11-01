@@ -327,7 +327,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/api/v1/bank-disbursements/status/' . $transaction->getTransactionID()
+				'/api/v1/bank-disbursements/status/' . $transaction->getCorrelationID()
 			);
 			$request['data'] = [
 				'transactionId' => $transaction->getTransactionID(),
