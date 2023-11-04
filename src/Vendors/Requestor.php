@@ -35,6 +35,7 @@ trait Requestor
 			$guzzle_client = $this->GetClient([
 				'base_uri' => parse_url($request['url'], PHP_URL_SCHEME) . '://' . parse_url($request['url'], PHP_URL_HOST),
 			]);
+			$request = array_merge($request, ['method', $method]);
 			$response = $guzzle_client->GuzzleRequest(
 				$method,
 				$request['url'] ?? null,
