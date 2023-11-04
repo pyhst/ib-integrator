@@ -17,9 +17,9 @@ class GuzzleHttpClient
 	protected $timeout = 40;
 	protected $effective_uri;
 	//
-	protected $request;
-	protected $response;
-	protected $result;
+	public $request;
+	public $response;
+	public $result;
 
 	//
 
