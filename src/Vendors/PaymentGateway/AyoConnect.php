@@ -38,7 +38,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -133,7 +133,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'to_json' => true,
 			];
 			$get = $this->DoRequest('GET', $request);
-			$response = (array) $get['response'];
+			extract($get);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -215,7 +215,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -295,7 +295,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -354,7 +354,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'to_json' => true,
 			];
 			$get = $this->DoRequest('GET', $request);
-			$response = (array) $get['response'];
+			extract($get);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);

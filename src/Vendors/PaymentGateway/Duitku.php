@@ -81,7 +81,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -143,7 +143,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -255,7 +255,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -340,7 +340,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -487,7 +487,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -615,7 +615,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
@@ -672,7 +672,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
-			$response = (array) $post['response'];
+			extract($post);
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
