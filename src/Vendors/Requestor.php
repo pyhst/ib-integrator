@@ -29,6 +29,23 @@ trait Requestor
 
 	//
 
+	public function getRequest()
+	{
+		return $this->request;
+	}
+
+	public function getResponse()
+	{
+		return $this->response;
+	}
+
+	public function getResult()
+	{
+		return $this->result;
+	}
+
+	//
+
 	public function DoRequest(string $method, $request)
 	{
 		try {
@@ -64,8 +81,9 @@ trait Requestor
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
 		}
-		$this->request = $request;
-		$this->response = $response;
+		$this->request = $guzzle_client->request;
+		$this->response = $guzzle_client->response;
+		$this->result = $guzzle_client->result;
 		return $result ?? [];
 	}
 

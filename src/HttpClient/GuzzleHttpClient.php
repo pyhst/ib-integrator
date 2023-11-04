@@ -75,6 +75,15 @@ class GuzzleHttpClient
 			]);
 			// Go
 			$response = $this->guzzle_client->request($method, $url, $options);
+			$this->request = [
+				'url' => $url,
+				'method' => $method,
+				'headers' => $headers,
+				'data' => $data,
+				'type' => $type,
+				'opt' => $opt,
+			];
+			$this->response = $response;
 			//
 			if (!empty($opt['to_json']) && $opt['to_json']) {
 				$result = [
@@ -83,8 +92,6 @@ class GuzzleHttpClient
 						'headers' => $response->getHeaders(),
 					];
 				$response->getBody()->rewind();
-				// $this->request = $request;
-				$this->response = $response;
 			} elseif (isset($opt['to_uri']) && !empty($opt['to_uri'])) {
 				$result = (string) strval($this->effective_uri);
 			} else {
@@ -95,6 +102,7 @@ class GuzzleHttpClient
 		} catch (\Throwable $e) {
 			SELF::ExceptionHandler($e);
 		}
+		$this->result = $result;
 		return $result ?? [];
 	}
 
