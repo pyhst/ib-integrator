@@ -21,6 +21,7 @@ class GuzzleHttpClient
 	public $request;
 	public $response;
 	// public $result;
+	public $stats;
 
 	//
 
@@ -71,6 +72,7 @@ class GuzzleHttpClient
 				$type => $data,
 				'on_stats' => function(TransferStats $stats) {
 						$this->effective_uri = $stats->getEffectiveUri();
+						$this->stats = $stats;
 					},
 				'timeout' => $opt['timeout'] ?? $this->timeout,
 			]);

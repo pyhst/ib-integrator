@@ -13,6 +13,7 @@ trait Requestor
 	protected $request;
 	protected $response;
 	// protected $result;
+	protected $stats;
 
 	public function GetClient($args)
 	{
@@ -43,6 +44,11 @@ trait Requestor
 	// {
 	// 	return $this->result;
 	// }
+
+	public function getStats()
+	{
+		return $this->stats;
+	}
 
 	//
 
@@ -85,6 +91,7 @@ trait Requestor
 		$this->request = $guzzle_client->request;
 		$this->response = $guzzle_client->response;
 		// $this->result = $guzzle_client->result;
+		$this->stats = $guzzle_client->stats;
 		return $result ?? [];
 	}
 
