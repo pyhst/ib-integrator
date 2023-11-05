@@ -31,9 +31,9 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'client_id' => $this->getID(),
 				'client_secret' => $this->getSecret(),
 			];
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/x-www-form-urlencoded',
-			]];
+			];
 			$request['opt'] = [
 				'to_json' => true,
 			];
@@ -69,6 +69,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
+			// throw $e;
 		}
 		return JSONResult($request, $res ?? [], $status_code ?? 400);
 	}

@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\TransferStats;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 
 class GuzzleHttpClient
 {
@@ -15,11 +16,11 @@ class GuzzleHttpClient
 	//
 	protected $args;
 	protected $timeout = 40;
-	protected $effective_uri;
 	//
+	public $effective_uri;
 	public $request;
 	public $response;
-	public $result;
+	// public $result;
 
 	//
 
@@ -74,36 +75,56 @@ class GuzzleHttpClient
 				'timeout' => $opt['timeout'] ?? $this->timeout,
 			]);
 			// Go
-			$response = $this->guzzle_client->request($method, $url, $options);
-			$this->request = [
-				'url' => $url,
-				'method' => $method,
-				'headers' => $headers,
-				'data' => $data,
-				'type' => $type,
-				'opt' => $opt,
-			];
-			$this->response = $response;
-			//
-			if (!empty($opt['to_json']) && $opt['to_json']) {
-				$result = [
-						'content' => $response->getBody()->getContents(),
-						'status_code' => (int) $response->getStatusCode(),
-						'headers' => $response->getHeaders(),
-					];
-				$response->getBody()->rewind();
-			} elseif (isset($opt['to_uri']) && !empty($opt['to_uri'])) {
-				$result = (string) strval($this->effective_uri);
-			} else {
-				$result = $response; // Default is return as PSR7 response
+			/*--------------------------------------  // Changed from  -------------------------------------------------------*/
+			// $response = $this->guzzle_client->request($method, $url, $options);
+			// $this->request = [
+			// 	'url' => $url,
+			// 	'method' => $method,
+			// 	'headers' => $headers,
+			// 	'data' => $data,
+			// 	'type' => $type,
+			// 	'opt' => $opt,
+			// ];
+			// $this->response = $response;
+			/*--------------------------------------  // Changed into: Return of PSR objects  -------------------------------------------------------*/
+			switch ($type) {
+				case 'query':
+					$request = new Request($method, $url . '?' . http_build_query($data), $headers);
+					break;
+				case 'form_params':
+					$request = new Request($method, $url, $headers, http_build_query($data));
+					break;
+				case 'json':
+					$request = new Request($method, $url, $headers, json_encode($data));
+					break;
 			}
+			$response = $this->guzzle_client->send($request, $options);
+			$this->request = $request;
+			$this->response = $response;
+			/*--------------------------------------  // Changed ends  -------------------------------------------------------*/
+			/*--------------------------------------  // Disable starts  -------------------------------------------------------*/
+			//
+			// if (!empty($opt['to_json']) && $opt['to_json']) {
+			// 	$result = [
+			// 			'content' => $response->getBody()->getContents(),
+			// 			'status_code' => (int) $response->getStatusCode(),
+			// 			'headers' => $response->getHeaders(),
+			// 		];
+			// 	$response->getBody()->rewind();
+			// } elseif (isset($opt['to_uri']) && !empty($opt['to_uri'])) {
+			// 	$result = (string) strval($this->effective_uri);
+			// } else {
+			// 	$result = $response; // Default is return as PSR7 response
+			// }
+			/*--------------------------------------  // Disable ends  -------------------------------------------------------*/
 		} catch (RequestException|ClientException $e) {
 			SELF::ExceptionHandler($e);
 		} catch (\Throwable $e) {
-			SELF::ExceptionHandler($e);
+			throw $e;
 		}
-		$this->result = $result;
-		return $result ?? [];
+		// $this->result = $result;
+		// return $result ?? [];
+		return $response;
 	}
 
 	private static function ExceptionHandler($e)

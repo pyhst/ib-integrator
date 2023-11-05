@@ -12,7 +12,7 @@ trait Requestor
 	//
 	protected $request;
 	protected $response;
-	protected $result;
+	// protected $result;
 
 	public function GetClient($args)
 	{
@@ -39,10 +39,10 @@ trait Requestor
 		return $this->response;
 	}
 
-	public function getResult()
-	{
-		return $this->result;
-	}
+	// public function getResult()
+	// {
+	// 	return $this->result;
+	// }
 
 	//
 
@@ -80,10 +80,11 @@ trait Requestor
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
+			// throw $e;
 		}
 		$this->request = $guzzle_client->request;
 		$this->response = $guzzle_client->response;
-		$this->result = $guzzle_client->result;
+		// $this->result = $guzzle_client->result;
 		return $result ?? [];
 	}
 
