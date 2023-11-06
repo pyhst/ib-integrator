@@ -141,19 +141,43 @@ class GuzzleHttpClient
 		} else {
 			$label = 'Unsuccessful request';
 		}
+		//
 		$uri = $request->getUri();
+		$data = $request->getBody()->__toString();
+		$method = $request->getMethod();
+		$headers = [];
+		foreach ($request->getHeaders() as $name => $values) {
+			$headers[] = $name . ": " . implode(", ", $values);
+		}
+		if (is_string($data) && is_array(json_decode($data, true))) {
+			$data = json_decode($data, true);
+		}
+		$result = $response->getBody()->getContents();
+		if (is_string($result) && is_array(json_decode($result, true))) {
+			$result = json_decode($result, true);
+		}
+		$request_response = json_encode([
+			'request' => [
+				'url' => $uri,
+				'data' => $data,
+				'headers' => $headers,
+				'method' => $method,
+			],
+			'response' => $result,
+		]);
+		//
 		$userInfo = $uri->getUserInfo();
 		if (false !== ($pos = \strpos($userInfo, ':'))) {
 			$uri = $uri->withUserInfo(\substr($userInfo, 0, $pos), '***');
 		}
 		$message = sprintf(
-			'%s/%s %s [%s:%s] "%s" ',
+			'%s/%s %s [%s:%s] "%s" --- ',
 			$label,
 			$response->getReasonPhrase(),
 			$response->getStatusCode(),
 			$request->getMethod(),
 			$uri,
-			$response->getBody()->getContents()
+			$request_response,
 		);
 		//
 		$status_code = (int) $e->getResponse()->getStatusCode();
