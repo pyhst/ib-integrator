@@ -6,7 +6,7 @@ if (file_exists($env)) {
 	$dotenv->load($env);
 }
 
-define('IB_HELPER_APP_DEBUG', $_ENV['APP_DEBUG'] ?? false);
+define('IB_HELPER_APP_DEBUG', $_ENV['IB_APP_DEBUG'] ?? env('APP_DEBUG') ?? null);
 define('IB_HELPER_TIMER_START', microtime(true));
 
 
