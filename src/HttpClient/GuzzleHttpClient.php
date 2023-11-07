@@ -162,9 +162,9 @@ class GuzzleHttpClient
 		}
 		$req = [
 			'url' => $uri,
-			'data' => $data,
-			'headers' => $headers,
 			'method' => $method,
+			'headers' => $headers,
+			'data' => $data,
 		];
 		$res = [
 			'status_code' => $response->getStatusCode(),
