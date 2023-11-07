@@ -73,10 +73,13 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'signature' => $signature,
 				'expiryPeriod' => $transaction->getExpireIn(), // In minutes
 			];
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+			];
+			$request['options'] = [
+				'as_json' => true,
+			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
 			extract($response);
@@ -132,10 +135,13 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'merchantOrderId' => $transaction->getOrderID(),
 				'signature' => $signature,
 			];
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+			];
+			$request['options'] = [
+				'as_json' => true,
+			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
 			extract($response);
@@ -240,11 +246,12 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timestamp' => $now,
 				'signature' => $signature,
 			];
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -324,11 +331,12 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timestamp' => $now,
 				'signature' => $signature,
 			];
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -470,11 +478,12 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					}
 				*/
 			}
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -597,11 +606,12 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					}
 				*/
 			}
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -653,11 +663,12 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'timestamp' => $now,
 				'signature' => $signature,
 			];
-			$request['headers'] = [[
+			$request['headers'] = [
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
-			]];
+			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);

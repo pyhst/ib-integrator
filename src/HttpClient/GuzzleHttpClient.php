@@ -122,8 +122,8 @@ class GuzzleHttpClient
 			$this->response = $e->getResponse();
 			SELF::ExceptionHandler($e);
 		} catch (\Throwable $e) {
-			$this->request = $e->getRequest();
-			$this->response = $e->getResponse();
+			// $this->request = $e->getRequest();
+			// $this->response = $e->getResponse();
 			throw $e;
 		}
 		$this->request = $request;

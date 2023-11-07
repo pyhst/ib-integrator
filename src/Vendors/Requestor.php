@@ -89,8 +89,8 @@ trait Requestor
 			$this->response = $guzzle_client->response;
 			// $this->result = $guzzle_client->result;
 			$this->stats = $guzzle_client->stats;
-			throw new ErrorException($e);
-			// throw $e;
+			// throw new ErrorException($e);
+			throw $e;
 		}
 		$this->request = $guzzle_client->request;
 		$this->response = $guzzle_client->response;
