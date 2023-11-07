@@ -101,7 +101,29 @@ if (!function_exists('ArrayValueRecursive')) {
 		return count($val) > 1 ? $val : array_pop($val);
 	}
 }
-
+/**
+ *
+ * Object to array recursize
+ *
+ */
+if (!function_exists('ObjectToArrayRecursive')) {
+	function ObjectToArrayRecursive($d)
+	{
+	   if (is_object($d)) $d = get_object_vars($d);
+   	return is_array($d) ? array_map(__FUNCTION__, $d) : $d;
+	}
+}
+/**
+ *
+ * Array to object recursize
+ *
+ */
+if (!function_exists('ArrayToObjectRecursive')) {
+	function ArrayToObjectRecursive($d)
+	{
+		return is_array($d) ? (object) array_map(__FUNCTION__, $d) : $d;
+	}
+}
 
 
 /** /*------------------------------------------------------------------  // JSONs   -------------------------------------------------------*
