@@ -221,6 +221,13 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					&& !empty($content->message)
 					// && trim(strtoupper($content->message)) == "OK"
 				) {
+					/* // Statuses
+						0	Inactive - The beneficiary is added to the customer but the beneficiary details were not verified from the bank
+						1	Active - The beneficiary details were verified from the bank
+						2	Disabled - The beneficiary has been deleted by the user and can be added again
+						3	Blocked - The beneficiary is permanently blocked by Ayoconnect. The beneficiary can't be used temporarily. If you want to unblock it, create a support ticket for unblocking the beneficiary
+						4	Invalid - Invalid beneficiary account.
+					 */
 					/* // Success
 						{
 							"code": 202,
@@ -300,6 +307,13 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					&& !empty($content->message)
 					// && trim(strtoupper($content->message)) == "SUCCESS"
 				) {
+					/* // Statuses
+						0	Processing
+						1	Success
+						2	Refunded
+						3	Canceled
+						4	Failed
+					*/
 					$res = [
 						'status' => '000',
 						'data' => (array) $content,
