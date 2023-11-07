@@ -64,7 +64,7 @@ trait Requestor
 				$request['url'] ?? null,
 				$request['data'] ?? [],
 				$request['headers'] ?? [],
-				$request['opt'] ?? [],
+				$request['options'] ?? [],
 			);
 			if (is_array($response)) {
 				$result = [
@@ -85,6 +85,10 @@ trait Requestor
 				$result = $response;
 			}
 		} catch (\Throwable $e) {
+			$this->request = $guzzle_client->request;
+			$this->response = $guzzle_client->response;
+			// $this->result = $guzzle_client->result;
+			$this->stats = $guzzle_client->stats;
 			throw new ErrorException($e);
 			// throw $e;
 		}

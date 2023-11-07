@@ -77,9 +77,6 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
 			]];
-			$request['opt'] = [
-				'to_json' => true,
-			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
 			extract($response);
@@ -139,9 +136,6 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
 			]];
-			$request['opt'] = [
-				'to_json' => true,
-			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
 			extract($response);
@@ -250,8 +244,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
 			]];
-			$request['opt'] = [
-				'to_json' => true,
+			$request['options'] = [
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -335,8 +328,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
 			]];
-			$request['opt'] = [
-				'to_json' => true,
+			$request['options'] = [
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -482,8 +474,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
 			]];
-			$request['opt'] = [
-				'to_json' => true,
+			$request['options'] = [
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -610,8 +601,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
 			]];
-			$request['opt'] = [
-				'to_json' => true,
+			$request['options'] = [
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -667,8 +657,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				'Content-Type' => 'application/json',
 				'Content-Length' => strlen(json_encode($request['data'])),
 			]];
-			$request['opt'] = [
-				'to_json' => true,
+			$request['options'] = [
 				'timeout' => 60,
 			];
 			$post = $this->DoRequest('POST', $request);

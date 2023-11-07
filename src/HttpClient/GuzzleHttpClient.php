@@ -47,7 +47,7 @@ class GuzzleHttpClient
 
 	//
 
-	public function GuzzleRequest(string $method, string $url, $data, array $headers = [], array $opt = [])
+	public function GuzzleRequest(string $method, string $url, $data, array $headers = [], array $options = [])
 	{
 		try {
 			$method = trim(strtoupper($method));
@@ -63,18 +63,18 @@ class GuzzleHttpClient
 					break;
 			}
 			// Overide
-			if (!empty($opt['as_json']) && $opt['as_json']) {
+			if (!empty($options['as_json']) && $options['as_json']) {
 				$type = 'json';
 			}
 			// Request options
-			$options = array_merge($opt, [
+			$options = array_merge($options, [
 				'headers' => $headers,
 				$type => $data,
 				'on_stats' => function(TransferStats $stats) {
 						$this->effective_uri = $stats->getEffectiveUri();
 						$this->stats = $stats;
 					},
-				'timeout' => $opt['timeout'] ?? $this->timeout,
+				'timeout' => $options['timeout'] ?? $this->timeout,
 			]);
 			// Go
 			/*--------------------------------------  // Changed from  -------------------------------------------------------*/
@@ -101,8 +101,6 @@ class GuzzleHttpClient
 					break;
 			}
 			$response = $this->guzzle_client->send($request, $options);
-			$this->request = $request;
-			$this->response = $response;
 			/*--------------------------------------  // Changed ends  -------------------------------------------------------*/
 			/*--------------------------------------  // Disable starts  -------------------------------------------------------*/
 			//
@@ -120,10 +118,16 @@ class GuzzleHttpClient
 			// }
 			/*--------------------------------------  // Disable ends  -------------------------------------------------------*/
 		} catch (RequestException|ClientException $e) {
+			$this->request = $e->getRequest();
+			$this->response = $e->getResponse();
 			SELF::ExceptionHandler($e);
 		} catch (\Throwable $e) {
+			$this->request = $e->getRequest();
+			$this->response = $e->getResponse();
 			throw $e;
 		}
+		$this->request = $request;
+		$this->response = $response;
 		// $this->result = $result;
 		// return $result ?? [];
 		return $response;
@@ -156,15 +160,17 @@ class GuzzleHttpClient
 		if (is_string($result) && is_array(json_decode($result, true))) {
 			$result = json_decode($result, true);
 		}
-		$request_response = json_encode([
-			'request' => [
-				'url' => $uri,
-				'data' => $data,
-				'headers' => $headers,
-				'method' => $method,
-			],
-			'response' => $result,
-		]);
+		$req = [
+			'url' => $uri,
+			'data' => $data,
+			'headers' => $headers,
+			'method' => $method,
+		];
+		$res = [
+			'status_code' => $response->getStatusCode(),
+			'content' => $result,
+		];
+		$request_response = json_encode([$req, $res]);
 		//
 		$userInfo = $uri->getUserInfo();
 		if (false !== ($pos = \strpos($userInfo, ':'))) {

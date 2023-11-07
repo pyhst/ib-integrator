@@ -34,9 +34,6 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 			$request['headers'] = [
 				'Content-Type' => 'application/x-www-form-urlencoded',
 			];
-			$request['opt'] = [
-				'to_json' => true,
-			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
 			extract($response);
@@ -129,9 +126,8 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'A-Correlation-ID' => $transaction->getCorrelationID(),
 				'A-Merchant-Code' => $this->getMerchantCode(),
 			];
-			$request['opt'] = [
+			$request['options'] = [
 				'timeout' => 60,
-				'to_json' => true,
 			];
 			$get = $this->DoRequest('GET', $request);
 			extract($get);
@@ -210,10 +206,9 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'A-Latitude' => '-6.200000',
 				'A-Longitude' => '-106.816666',
 			];
-			$request['opt'] = [
+			$request['options'] = [
 				'as_json' => true,
 				'timeout' => 60,
-				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
@@ -290,10 +285,9 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'A-Longitude' => '-106.816666',
 				'A-IP-Address' => $transaction->getIPAddress(),
 			];
-			$request['opt'] = [
+			$request['options'] = [
 				'as_json' => true,
 				'timeout' => 60,
-				'to_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
@@ -350,9 +344,8 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 				'A-Longitude' => '-106.816666',
 				'A-IP-Address' => $transaction->getIPAddress(),
 			];
-			$request['opt'] = [
+			$request['options'] = [
 				'timeout' => 60,
-				'to_json' => true,
 			];
 			$get = $this->DoRequest('GET', $request);
 			extract($get);
