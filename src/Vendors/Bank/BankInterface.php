@@ -2,6 +2,8 @@
 
 namespace IbIntegrator\Vendors\Bank;
 
+use IbIntegrator\Vendors\Transaction;
+
 interface BankInterface
 {
 

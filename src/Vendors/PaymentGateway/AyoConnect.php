@@ -78,6 +78,16 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 		// Not applicable
 	}
 
+	public function InquiryBilling(Transaction $transaction)
+	{
+		// Not applicable
+	}
+
+	public function CancelBilling(Transaction $transaction)
+	{
+		// Not applicable
+	}
+
 	public function InquiryPayment(Transaction $transaction)
 	{
 		// Not applicable

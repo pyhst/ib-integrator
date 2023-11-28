@@ -10,6 +10,9 @@ class Transaction
 	 * Attributes
 	 *
 	 */
+	protected $data;
+	protected $url;
+	//
 	protected $time;
 	protected $order_id;
 	protected $transaction_id;
@@ -89,6 +92,28 @@ class Transaction
 		$this->currency_code = '360';
 		$this->expire_in = 120; // In minutes
 		$this->expire_at = date($this->time, strtotime('+2 hour')); // Precise date/time
+	}
+
+	//
+
+	public function setData($data): void
+	{
+		$this->data = $data;
+	}
+
+	public function getData(): ?array
+	{
+		return $this->data;
+	}
+
+	public function setURL($url): void
+	{
+		$this->url = $url;
+	}
+
+	public function getURL(): ?array
+	{
+		return $this->url;
 	}
 
 	//
