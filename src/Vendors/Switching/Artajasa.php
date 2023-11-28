@@ -97,7 +97,10 @@ class Artajasa extends Vendor implements SwitchingInterface
 	public function MakePayment(Transaction $transaction)
 	{
 		try {
-			$request['url'] = CleanURL( $transaction->getURL() );
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
 			$request['data'] = $transaction->getData();
 			$request['headers'] = [
 				'Content-Type' => 'application/json',
@@ -150,7 +153,10 @@ class Artajasa extends Vendor implements SwitchingInterface
 	public function MakeRefund(Transaction $transaction)
 	{
 		try {
-			$request['url'] = CleanURL( $transaction->getURL() );
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
 			$request['data'] = $transaction->getData();
 			$request['headers'] = [
 				'Content-Type' => 'application/json',
@@ -203,7 +209,10 @@ class Artajasa extends Vendor implements SwitchingInterface
 	public function MakeCheckStatus(Transaction $transaction)
 	{
 		try {
-			$request['url'] = CleanURL( $transaction->getURL() );
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
 			$request['data'] = $transaction->getData();
 			$request['headers'] = [
 				'Content-Type' => 'application/json',
