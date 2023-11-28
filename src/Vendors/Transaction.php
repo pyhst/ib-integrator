@@ -111,7 +111,7 @@ class Transaction
 		$this->url = $url;
 	}
 
-	public function getURL(): ?array
+	public function getURL(): ?string
 	{
 		return $this->url;
 	}
