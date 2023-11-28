@@ -46,7 +46,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 		// Not applicable
 	}
 
-	public function _Replace($data)
+	public function _Replace($data = [])
 	{
 		// Set post variables
 		$this->datetime = new \DateTime(now(), new \DateTimeZone('UTC'));
