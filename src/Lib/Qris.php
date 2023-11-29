@@ -703,7 +703,7 @@ class Qris
 				asort($arr_qris);
 			}
 		} catch (\Throwable $e) {
-			return StringError($e, __FUNCTION__);
+			return ErrorToString($e, __FUNCTION__);
 		}
 		return $arr_qris;
 	}
