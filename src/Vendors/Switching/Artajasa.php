@@ -49,7 +49,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 	public function _Replace($data = [])
 	{
 		// Set post variables
-		$this->datetime = new \DateTime(now(), new \DateTimeZone('UTC'));
+		$this->datetime = new \DateTime("now", new \DateTimeZone('UTC'));
 		$this->timestamp = strval( $this->datetime->getTimestamp() );
 		$this->his = $this->datetime->format('His');
 		$this->md = $this->datetime->format('md');

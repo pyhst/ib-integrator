@@ -118,6 +118,16 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 		return JSONResult($request, $res ?? [], $status_code ?? 400);
 	}
 
+	public function InquiryBilling(Transaction $transaction)
+	{
+		// Not applicable
+	}
+
+	public function CancelBilling(Transaction $transaction)
+	{
+		// Not applicable
+	}
+
 	public function InquiryPayment(Transaction $transaction)
 	{
 		try {
