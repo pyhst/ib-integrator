@@ -248,7 +248,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			$signature = hash('sha256',
 				$this->getParam('DisbursementEmail') .
 				$now .
-				$this->getSecret()
+				$this->getParam('DisbursementAPIKey')
 			);
 			$request['data'] = [
 				'userId' => $this->getParam('DisbursementMerchantID'),
@@ -333,7 +333,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			$signature = hash('sha256',
 				$this->getParam('DisbursementEmail') .
 				$now .
-				$this->getSecret()
+				$this->getParam('DisbursementAPIKey')
 			);
 			$request['data'] = [
 				'userId' => $this->getParam('DisbursementMerchantID'),
@@ -403,7 +403,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					$transaction->getCustomerBankAccountNumber() .
 					(int) $transaction->getAmount() .
 					$transaction->getPurposeOfTransaction() .
-					$this->getSecret()
+					$this->getParam('DisbursementAPIKey')
 				);
 				$request['data'] = [
 					'userId' => $this->getParam('DisbursementMerchantID'),
@@ -444,7 +444,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					$transaction->getCustomerBankAccountNumber() .
 					(int) $transaction->getAmount() .
 					$transaction->getPurposeOfTransaction() .
-					$this->getSecret()
+					$this->getParam('DisbursementAPIKey')
 				);
 				$request['data'] = [
 					'userId' => $this->getParam('DisbursementMerchantID'),
@@ -543,7 +543,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					(int) $transaction->getAmount() .
 					$transaction->getPurposeOfTransaction() .
 					$transaction->getDisbursementID() .
-					$this->getSecret()
+					$this->getParam('DisbursementAPIKey')
 				);
 				$request['data'] = [
 					'disburseId' => $transaction->getDisbursementID(),
@@ -587,7 +587,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					(int) $transaction->getAmount() .
 					$transaction->getPurposeOfTransaction() .
 					$transaction->getDisbursementID() .
-					$this->getSecret()
+					$this->getParam('DisbursementAPIKey')
 				);
 				$request['data'] = [
 					'disburseId' => $transaction->getDisbursementID(),
@@ -664,7 +664,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$this->getParam('DisbursementEmail') .
 				$now .
 				$transaction->getDisbursementID() .
-				$this->getSecret()
+				$this->getParam('DisbursementAPIKey')
 			);
 			$request['data'] = [
 				'disburseId' => $transaction->getDisbursementID(),
