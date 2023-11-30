@@ -690,7 +690,11 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					!empty($content->responseCode)
 					&& $content->responseCode == "00"
 					&& !empty($content->responseDesc)
-					&& trim(strtoupper($content->responseDesc)) == "SUCCESS"
+					&& (
+						trim(strtoupper($content->responseDesc)) == "SUCCESS"
+						||
+						trim(strtoupper($content->responseDesc)) == "SUCCESSFUL"
+					)
 				) {
 					/* // Success
 						{
