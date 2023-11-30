@@ -251,7 +251,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$this->getSecret()
 			);
 			$request['data'] = [
-				'userId' => $this->getID(),
+				'userId' => $this->getParam('DisbursementMerchantID'),
 				'email' => $this->getParam('DisbursementEmail'),
 				'timestamp' => $now,
 				'signature' => $signature,
@@ -336,7 +336,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$this->getSecret()
 			);
 			$request['data'] = [
-				'userId' => $this->getID(),
+				'userId' => $this->getParam('DisbursementMerchantID'),
 				'email' => $this->getParam('DisbursementEmail'),
 				'timestamp' => $now,
 				'signature' => $signature,
@@ -406,7 +406,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					$this->getSecret()
 				);
 				$request['data'] = [
-					'userId' => $this->getID(),
+					'userId' => $this->getParam('DisbursementMerchantID'),
 					'amountTransfer' => (int) $transaction->getAmount(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
 					'bankCode' => $transaction->getCustomerBankCode(),
@@ -447,7 +447,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					$this->getSecret()
 				);
 				$request['data'] = [
-					'userId' => $this->getID(),
+					'userId' => $this->getParam('DisbursementMerchantID'),
 					'amountTransfer' => (int) $transaction->getAmount(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
 					'bankCode' => $transaction->getCustomerBankCode(),
@@ -547,7 +547,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				);
 				$request['data'] = [
 					'disburseId' => $transaction->getDisbursementID(),
-					'userId' => $this->getID(),
+					'userId' => $this->getParam('DisbursementMerchantID'),
 					'email' => $this->getParam('DisbursementEmail'),
 					'bankCode' => $transaction->getCustomerBankCode(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
@@ -591,7 +591,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				);
 				$request['data'] = [
 					'disburseId' => $transaction->getDisbursementID(),
-					'userId' => $this->getID(),
+					'userId' => $this->getParam('DisbursementMerchantID'),
 					'email' => $this->getParam('DisbursementEmail'),
 					'bankCode' => $transaction->getCustomerBankCode(),
 					'bankAccount' => $transaction->getCustomerBankAccountNumber(),
@@ -668,7 +668,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			);
 			$request['data'] = [
 				'disburseId' => $transaction->getDisbursementID(),
-				'userId' => $this->getID(),
+				'userId' => $this->getParam('DisbursementMerchantID'),
 				'email' => $this->getParam('DisbursementEmail'),
 				'timestamp' => $now,
 				'signature' => $signature,
