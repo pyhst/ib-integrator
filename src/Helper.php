@@ -197,13 +197,18 @@ if (!function_exists('ErrorToTrace')) {
 			$limit = 5;
 			$n = 0;
 			foreach ($e->getTrace() as $each_trace) {
-				$n++;
-				$errors[] = implode('', array_filter([
-					basename(dirname($each_trace['file'])) . '/' . basename($each_trace['file']),
-					"->" . $each_trace['function'] . "()",
-					':' . $each_trace['line'],
-					// ', ' . $e->getMessage(),
-				]));
+				if (isset($each_trace['file'])
+					&& isset($each_trace['line'])
+					&& isset($each_trace['function'])
+				) {
+					$n++;
+					$errors[] = implode('', array_filter([
+						basename(dirname($each_trace['file'])) . '/' . basename($each_trace['file']),
+						"->" . $each_trace['function'] . "()",
+						':' . $each_trace['line'],
+						// ', ' . $e->getMessage(),
+					]));
+				}
 				if ($n == $limit) {
 					break;
 				}
