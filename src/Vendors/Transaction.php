@@ -22,6 +22,10 @@ class Transaction
 	protected $remark;
 	protected $items;
 	protected $correlation_id;
+		protected $external_id;
+		protected $request_id;
+		protected $start_date;
+		protected $end_date;
 	//
 	protected $currency;
 	protected $currency_code;
@@ -157,6 +161,46 @@ class Transaction
 	{
 		return $this->correlation_id;
 	}
+
+		public function setExternalID(string $external_id): void
+		{
+			$this->external_id = $external_id;
+		}
+
+		public function getExternalID(): ?string
+		{
+			return $this->external_id;
+		}
+
+		public function setRequestID(string $request_id): void
+		{
+			$this->request_id = $request_id;
+		}
+
+		public function getRequestID(): ?string
+		{
+			return $this->request_id;
+		}
+
+		public function setStartDate(string $start_date): void
+		{
+			$this->start_date = $start_date;
+		}
+
+		public function getStartDate(): ?string
+		{
+			return $this->start_date;
+		}
+
+		public function setEndDate(string $end_date): void
+		{
+			$this->end_date = $end_date;
+		}
+
+		public function getEndDate(): ?string
+		{
+			return $this->end_date;
+		}
 
 	public function setReferenceNumber(string $reference_num): void
 	{
