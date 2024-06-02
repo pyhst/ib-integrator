@@ -16,6 +16,7 @@ class Transaction
 	protected $time;
 	protected $order_id;
 	protected $transaction_id;
+	protected $transaction_time;
 	protected $reference_num;
 	protected $invoice_num;
 	protected $description;
@@ -150,6 +151,16 @@ class Transaction
 	public function getTransactionID(): ?string
 	{
 		return $this->transaction_id;
+	}
+
+	public function setTransactionTime(string $transaction_time): void
+	{
+		$this->transaction_time = $transaction_time;
+	}
+
+	public function getTransactionTime(): ?string
+	{
+		return $this->transaction_time;
 	}
 
 	public function setCorrelationID(string $correlation_id): void
@@ -768,6 +779,16 @@ class Transaction
 	public function getParams()
 	{
 		return $this->params;
+	}
+
+	public function setParam(string $key, string $value): void
+	{
+		$this->params[$key] = $value;
+	}
+
+	public function getParam(string $key): string
+	{
+		return $this->params[$key];
 	}
 
 }

@@ -73,7 +73,7 @@ class G2UP extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
-						'data' => array_merge((array) $content, $this->request['data']),
+						'data' => array_merge((array) $content, $request['data']),
 					];
 					$status_code = 200;
 				} else {
