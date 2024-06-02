@@ -1,13 +1,20 @@
 <?php
 
+use IbIntegrator\Vendors\PaymentGateway\Gempay;
+use IbIntegrator\Vendors\Transaction;
+
 require_once __DIR__ . '/../includes.php';
 
-$init = new \Growinc\Payment\Init($_ENV['GEMPAY_MERCHANT_ID'], $_ENV['GEMPAY_SECRET']);
-$init->setParam('GEMPAY_PROJECT_NO', $_ENV['GEMPAY_PROJECT_NO']);
-$init->setRequestURL($_ENV['GEMPAY_HOST_URL_DISBURSEMENT']);
-$init->setCallbackURL('http://sb.tf2us.com/secure/callback/demo');
-
-$vendor = new \Growinc\Payment\Vendors\GemPay($init);
+$vendor = new Gempay();
+$vendor->setID($_ENV['GEMPAY_MERCHANT_ID']);
+$vendor->setSecret($_ENV['GEMPAY_SECRET']);
+$vendor->setHostURL($_ENV['GEMPAY_HOST_URL']);
+$vendor->setPaymentURL($_ENV['GEMPAY_HOST_URL']);
+$vendor->setRequestURL($_ENV['GEMPAY_HOST_URL']);
+$vendor->setCallbackURL('http://sb.tf2us.com/secure/callback/demo');
+$vendor->setParams([
+	'GEMPAY_PROJECT_NO' => $_ENV['GEMPAY_PROJECT_NO'],
+]);
 
 
 
@@ -43,7 +50,7 @@ $vendor = new \Growinc\Payment\Vendors\GemPay($init);
 //  */
 // try {
 // 	$time = time();
-// 	$transaction = new \Growinc\Payment\Transaction();
+// 	$transaction = new Transaction();
 // 	// $transaction->setRequestID($time);
 // 	$transaction->setReferenceNumber($time);
 // 	$transaction->setAmount('10000');
@@ -86,7 +93,7 @@ $vendor = new \Growinc\Payment\Vendors\GemPay($init);
 //  */
 // try {
 // 	$time = time();
-// 	$transaction = new \Growinc\Payment\Transaction();
+// 	$transaction = new Transaction();
 // 	$transaction->setOrderID('240521130455ZGLJ');
 // 	$transaction->setDescription('TEST-TRANSFER');
 // 	$transaction->setReqDateTime(date('Y-m-d H:i:s', $time));
