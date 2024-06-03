@@ -62,7 +62,7 @@ class G2UP extends Vendor implements PaymentGatewayInterface
 				$content = (object) json_decode($content);
 				if (
 					!empty($content->status)
-					&& trim(strtolower($content->status)) == true
+					&& trim(strtolower($content->status)) == "success"
 				) {
 					/* // Success // QRIS
 						{
