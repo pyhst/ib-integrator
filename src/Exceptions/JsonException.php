@@ -30,7 +30,7 @@ class JsonException extends \Exception implements ExceptionInterface
 			throw new $this('Unknown ' . get_class($this));
 		}
 		$error_message =
-			($context ? "$context() failed " : null) .
+			($context ? "$context() failed. " : null) .
 			($message ? "$message " : 'Unknown error') .
 			implode('/', [
 				$status_code ? "SC$status_code" : "",
