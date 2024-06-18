@@ -24,6 +24,8 @@ class Artajasa extends Vendor implements SwitchingInterface
 	public $gmtmdhis;
 	public $gmtdate;
 	public $ymdhis;
+	//
+	protected $timeout = 60;
 
 	public function __construct()
 	{
@@ -111,7 +113,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
-				'timeout' => 60,
+				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
@@ -167,7 +169,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
-				'timeout' => 60,
+				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
@@ -223,7 +225,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
-				'timeout' => 60,
+				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
 			extract($post);
@@ -260,6 +262,216 @@ class Artajasa extends Vendor implements SwitchingInterface
 	public function ReceiveRefundCallback($request)
 	{
 
+	}
+
+	//
+
+	public function MakeInquiry(Transaction $transaction)
+	{
+		try {
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
+			$request['data'] = $transaction->getData();
+			$request['headers'] = [
+				'Content-Type' => 'application/json',
+				'Date' => $this->_Replace('#gmtdate#'),
+				'Signature' => $this->GenerateSignature([
+					'data' => $transaction->getData(),
+					'secret_key' => $this->getSecret()
+				]),
+			];
+			$request['options'] = [
+				'timeout' => $this->timeout,
+			];
+			$post = $this->DoRequest('POST', $request);
+			extract($post);
+			extract($response);
+			if (!empty($content) && IsJSON($content)) {
+				$content = (object) json_decode($content);
+				if (
+					!empty($content->QRCheckStatusRS)
+				) {
+					$res = [
+						'status' => '000',
+						'data' => (array) $content,
+					];
+					$status_code = 200;
+				} else {
+					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+				}
+			} else {
+				throw new JsonException(__FUNCTION__, $content, 400, 902);
+			}
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
+		return JSONResult($request, $res ?? [], $status_code ?? 400);
+	}
+
+	public function MakeEchoTest(Transaction $transaction)
+	{
+		try {
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
+			$request['data'] = $transaction->getData();
+			$request['headers'] = [
+				'Content-Type' => 'application/json',
+				'Date' => $this->_Replace('#gmtdate#'),
+			];
+			$request['options'] = [
+				'timeout' => $this->timeout,
+			];
+			$post = $this->DoRequest('POST', $request);
+			extract($post);
+			extract($response);
+			if (!empty($content) && IsJSON($content)) {
+				$content = (object) json_decode($content);
+				if (
+					!empty($content->QREchoTestRS)
+				) {
+					$res = [
+						'status' => '000',
+						'data' => (array) $content,
+					];
+					$status_code = 200;
+				} else {
+					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+				}
+			} else {
+				throw new JsonException(__FUNCTION__, $content, 400, 902);
+			}
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
+		return JSONResult($request, $res ?? [], $status_code ?? 400);
+	}
+
+	public function MakeSignOn(Transaction $transaction)
+	{
+		try {
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
+			$request['data'] = $transaction->getData();
+			$request['headers'] = [
+				'Content-Type' => 'application/json',
+				'Date' => $this->_Replace('#gmtdate#'),
+			];
+			$request['options'] = [
+				'timeout' => $this->timeout,
+			];
+			$post = $this->DoRequest('POST', $request);
+			extract($post);
+			extract($response);
+			if (!empty($content) && IsJSON($content)) {
+				$content = (object) json_decode($content);
+				if (
+					!empty($content->QRSignOnRS)
+				) {
+					$res = [
+						'status' => '000',
+						'data' => (array) $content,
+					];
+					$status_code = 200;
+				} else {
+					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+				}
+			} else {
+				throw new JsonException(__FUNCTION__, $content, 400, 902);
+			}
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
+		return JSONResult($request, $res ?? [], $status_code ?? 400);
+	}
+
+	public function MakeSignOff(Transaction $transaction)
+	{
+		try {
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
+			$request['data'] = $transaction->getData();
+			$request['headers'] = [
+				'Content-Type' => 'application/json',
+				'Date' => $this->_Replace('#gmtdate#'),
+			];
+			$request['options'] = [
+				'timeout' => $this->timeout,
+			];
+			$post = $this->DoRequest('POST', $request);
+			extract($post);
+			extract($response);
+			if (!empty($content) && IsJSON($content)) {
+				$content = (object) json_decode($content);
+				if (
+					!empty($content->QRSignOffRS)
+				) {
+					$res = [
+						'status' => '000',
+						'data' => (array) $content,
+					];
+					$status_code = 200;
+				} else {
+					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+				}
+			} else {
+				throw new JsonException(__FUNCTION__, $content, 400, 902);
+			}
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
+		return JSONResult($request, $res ?? [], $status_code ?? 400);
+	}
+
+	public function MakeQRInquiry(Transaction $transaction)
+	{
+		try {
+			$request['url'] = CleanURL(
+				$this->getHostURL() .
+				$transaction->getURL()
+			);
+			$request['data'] = $transaction->getData();
+			$request['headers'] = [
+				'Content-Type' => 'application/json',
+				'Date' => $this->_Replace('#gmtdate#'),
+				'Signature' => $this->GenerateSignature([
+					'data' => $transaction->getData(),
+					'secret_key' => $this->getSecret()
+				]),
+			];
+			$request['options'] = [
+				'timeout' => $this->timeout,
+			];
+			$post = $this->DoRequest('POST', $request);
+			extract($post);
+			extract($response);
+			if (!empty($content) && IsJSON($content)) {
+				$content = (object) json_decode($content);
+				if (
+					!empty($content->QRInquiryRS)
+				) {
+					$res = [
+						'status' => '000',
+						'data' => (array) $content,
+					];
+					$status_code = 200;
+				} else {
+					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+				}
+			} else {
+				throw new JsonException(__FUNCTION__, $content, 400, 902);
+			}
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
+		return JSONResult($request, $res ?? [], $status_code ?? 400);
 	}
 
 }
