@@ -29,7 +29,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 
 	public function __construct()
 	{
-		$this->_Replace();
+		// $this->_Replace();
 	}
 
 	public function GenerateSignature($args = [])
@@ -48,10 +48,10 @@ class Artajasa extends Vendor implements SwitchingInterface
 		// Not applicable
 	}
 
-	public function _Replace($data = [])
+	public function _Replace($data = null)
 	{
 		// Set post variables
-		$this->datetime = new \DateTime("now", new \DateTimeZone('UTC'));
+		$this->datetime = new \DateTime(now(), new \DateTimeZone('UTC'));
 		$this->timestamp = strval( $this->datetime->getTimestamp() );
 		$this->his = $this->datetime->format('His');
 		$this->md = $this->datetime->format('md');
@@ -63,7 +63,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 		$this->gmtmdhis = $this->datetime->format('mdHis');
 		$this->gmtdate = $this->datetime->format('D, d M Y H:i:s \G\M\T');
 		//
-		$data = json_encode($data);
+		if (IsJSON($data)) $data = json_encode($data);
 		$data = str_replace('#timestamp#', $this->timestamp, $data);
 		$data = str_replace('#his#', $this->his, $data);
 		$data = str_replace('#md#', $this->md, $data);
@@ -72,7 +72,6 @@ class Artajasa extends Vendor implements SwitchingInterface
 		$data = str_replace('#gmtmdhis#', $this->gmtmdhis, $data);
 		$data = str_replace('#gmtdate#', $this->gmtdate, $data);
 		$data = str_replace('#ymdhis#', $this->ymdhis, $data);
-		$data = json_decode($data, true);
 		//
 		return $data;
 	}
@@ -113,6 +112,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -169,6 +169,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -225,6 +226,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -283,6 +285,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -323,6 +326,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				'Date' => $this->_Replace('#gmtdate#'),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -363,6 +367,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				'Date' => $this->_Replace('#gmtdate#'),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -403,6 +408,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				'Date' => $this->_Replace('#gmtdate#'),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -447,6 +453,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				]),
 			];
 			$request['options'] = [
+				'as_json' => true,
 				'timeout' => $this->timeout,
 			];
 			$post = $this->DoRequest('POST', $request);
