@@ -463,6 +463,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 				$content = (object) json_decode($content);
 				if (
 					!empty($content->QRInquiryRS)
+					|| !empty($content->QRInquiryQrisRS)
 				) {
 					$res = [
 						'status' => '000',
