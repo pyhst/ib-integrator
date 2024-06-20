@@ -25,7 +25,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/v1/oauth/client_credential/accesstoken?grant_type=client_credentials'
+				($args['url'] ?? '/v1/oauth/client_credential/accesstoken?grant_type=client_credentials')
 			);
 			$request['data'] = [
 				'client_id' => $this->getID(),
@@ -120,7 +120,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/api/v1/merchants/balance'
+				($transaction->getURL() ?? '/api/v1/merchants/balance')
 			);
 			$request['data'] = [
 				'transactionId' => $transaction->getTransactionID(),
@@ -190,7 +190,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/api/v1/bank-disbursements/beneficiary'
+				($transaction->getURL() ?? '/api/v1/bank-disbursements/beneficiary')
 			);
 			$request['data'] = [
 				'transactionId' => $transaction->getTransactionID(),
@@ -278,7 +278,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/api/v1/bank-disbursements/disbursement'
+				($transaction->getURL() ?? '/api/v1/bank-disbursements/disbursement')
 			);
 			$request['data'] = [
 				'transactionId' => $transaction->getTransactionID(),
@@ -346,7 +346,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/api/v1/bank-disbursements/status/' . $transaction->getTransactionID()
+				($transaction->getURL() ?? '/api/v1/bank-disbursements/status/' . $transaction->getTransactionID())
 			);
 			$request['data'] = [
 				'transactionId' => $transaction->getTransactionID(),
@@ -403,7 +403,7 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 
 	public function DisbursementCallback($request)
 	{
-		//
+		// Not applicable
 	}
 
 }

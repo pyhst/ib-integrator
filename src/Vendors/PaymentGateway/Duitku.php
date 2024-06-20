@@ -17,11 +17,11 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 
 	public function GenerateSignature($args = [])
 	{
-
+		// Not applicable
 	}
 	public function AuthGetToken($args = [])
 	{
-
+		// Not applicable
 	}
 
 	//
@@ -31,7 +31,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/webapi/api/merchant/v2/inquiry'
+				($transaction->getURL() ?? '/webapi/api/merchant/v2/inquiry')
 			);
 			$billing_address = [
 				'firstName' => $transaction->getCustomerName(),
@@ -93,10 +93,11 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				) {
 					/* // Success VA
 						{
+							"merchantOrderId": "1701926600",
 							"merchantCode": "DS15995",
-							"reference": "DS15995232R1EIKIY6HVWPJB",
-							"paymentUrl": "https://sandbox.duitku.com/topup/topupdirectv2.aspx?ref=BC23QGHL75MGRLOO2MF",
-							"vaNumber": "7007014007401309",
+							"reference": "DS1599523JY1NIDU23UORZ8U",
+							"paymentUrl": "https:\\/\\/sandbox.duitku.com\\/topup\\/topupdirectv2.aspx?ref=BC23GEE8WLWLXIU6OAI",
+							"vaNumber": "7007014002758472",
 							"amount": "100000",
 							"statusCode": "00",
 							"statusMessage": "SUCCESS"
@@ -104,7 +105,9 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
-						'data' => (array) $content,
+						'data' => (array) array_merge([
+							'merchantOrderId' => $transaction->getOrderID(),
+						], (array) $content),
 					];
 				} else {
 					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
@@ -133,7 +136,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 		try {
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/webapi/api/merchant/transactionStatus'
+				($transaction->getURL() ?? '/webapi/api/merchant/transactionStatus')
 			);
 			$signature = md5(
 				$this->getID() .
@@ -159,11 +162,19 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 				$content = (object) json_decode($content);
 				if (
 					!empty($content->statusCode)
-					&& $content->statusCode == "00"
 					&& !empty($content->statusMessage)
-					&& trim(strtoupper($content->statusMessage)) == "SUCCESS"
+					&& !empty($content->merchantOrderId)
+					&& !empty($content->amount)
 				) {
 					/* // Success
+						{
+							"merchantOrderId": "1701926600",
+							"reference": "DS1599523JY1NIDU23UORZ8U",
+							"amount": "100000",
+							"fee": "5000.00",
+							"statusCode": "01",
+							"statusMessage": "PROCESS"
+						}
 					*/
 					$res = [
 						'status' => '000',
@@ -243,7 +254,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			$now = round(microtime(true) * 1000);
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/webapi/api/disbursement/listBank'
+				($transaction->getURL() ?? '/webapi/api/disbursement/listBank')
 			);
 			$signature = hash('sha256',
 				$this->getParam('DisbursementEmail') .
@@ -328,7 +339,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			$now = round(microtime(true) * 1000);
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/webapi/api/disbursement/checkbalance'
+				($transaction->getURL() ?? '/webapi/api/disbursement/checkbalance')
 			);
 			$signature = hash('sha256',
 				$this->getParam('DisbursementEmail') .
@@ -394,7 +405,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			if (!$transaction->getTransferMethod()) { /*--------------------------------------  // Online transfer method  -------------------------------------------------------*/
 				$request['url'] = CleanURL(
 					$this->getHostURL() .
-					'/webapi/api/disbursement/inquiry'
+					($transaction->getURL() ?? '/webapi/api/disbursement/inquiry')
 				);
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
@@ -434,7 +445,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			} else { /*--------------------------------------  // For other transfer method (LLG, RTGS, H2H or BIFAST)  -------------------------------------------------------*/
 				$request['url'] = CleanURL(
 					$this->getHostURL() .
-					'/webapi/api/disbursement/inquiryclearing'
+					($transaction->getURL() ?? '/webapi/api/disbursement/inquiryclearing')
 				);
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
@@ -531,7 +542,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			if (!$transaction->getTransferMethod()) { /*--------------------------------------  // Online transfer method  -------------------------------------------------------*/
 				$request['url'] = CleanURL(
 					$this->getHostURL() .
-					'/webapi/api/disbursement/transfer'
+					($transaction->getURL() ?? '/webapi/api/disbursement/transfer')
 				);
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
@@ -574,7 +585,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			} else { /*--------------------------------------  // For other transfer method (LLG, RTGS, H2H or BIFAST)  -------------------------------------------------------*/
 				$request['url'] = CleanURL(
 					$this->getHostURL() .
-					'/webapi/api/disbursement/transferclearing'
+					($transaction->getURL() ?? '/webapi/api/disbursement/transferclearing')
 				);
 				$signature = hash('sha256',
 					$this->getParam('DisbursementEmail') .
@@ -658,7 +669,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 			$now = round(microtime(true) * 1000);
 			$request['url'] = CleanURL(
 				$this->getHostURL() .
-				'/webapi/api/disbursement/inquirystatus'
+				($transaction->getURL() ?? '/webapi/api/disbursement/inquirystatus')
 			);
 			$signature = hash('sha256',
 				$this->getParam('DisbursementEmail') .
@@ -726,7 +737,7 @@ class Duitku extends Vendor implements PaymentGatewayInterface
 
 	public function DisbursementCallback($request)
 	{
-
+		// Not applicable
 	}
 
 }
