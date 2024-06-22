@@ -532,7 +532,7 @@ class Qris
 	|
 	///////////////////////////////////////////////////////////////// \\\\\\\\\\\\\\\\\\\\\\\\\ ///////////////////////*/
 
-	protected $encode_attempt = 10;
+	protected $encode_attempt = 50;
 
 	public function Set(&$prop, $value)
 	{
@@ -559,6 +559,7 @@ class Qris
 	public function Encode()
 	{
 		$qris_string = '';
+		$citt = '';
 		foreach ($this as $key => $value) {
 			if (!empty($value['value'])) {
 				$qris_string .=
@@ -571,23 +572,46 @@ class Qris
 			}
 		}
 		$debug_citt_attempts = [];
+		// 1ts attempt
+		if (strlen($citt) != 4) {
+			for ($i = 0; $i < $this->encode_attempt; $i++) {
+				// $citt = strtoupper(dechex((new Crc16)->CCITT($qris_string . '6304'))); // Denied by switching as invalid
+				$citt = strtoupper(dechex((new Crc16)->CCITT_FALSE($qris_string . '6304')));
+				// $debug_citt_attempts[] = $citt;
+				// if ($i >= $this->encode_attempt) {
+				// 	$debug_arr = [
+				// 		'qris_string' => $qris_string,
+				// 		'debug_citt_attempts' => $debug_citt_attempts,
+				// 	];
+				// 	if ($this->debug) {
+				// 		throw new \Exception("Failed to generate 4 digit CRC in $this->encode_attempt attempts. Debug: " . json_encode($debug_arr), 900);
+				// 	}
+				// 	throw new \Exception("Failed to generate 4 digit CRC", 900);
+				// }
+				if (strlen($citt) == 4) break;
+			}
+		}
+		// 2nd attempt
+		if (strlen($citt) != 4) {
+			for ($i = 0; $i < $this->encode_attempt; $i++) {
+				$citt = strtoupper(CRC16Normal($qris_string . '6304'));
+				// $debug_citt_attempts[] = $citt;
+				// if ($i >= $this->encode_attempt) {
+				// 	$debug_arr = [
+				// 		'qris_string' => $qris_string,
+				// 		'debug_citt_attempts' => $debug_citt_attempts,
+				// 	];
+				// 	if ($this->debug) {
+				// 		throw new \Exception("Failed to generate 4 digit CRC in $this->encode_attempt attempts. Debug: " . json_encode($debug_arr), 900);
+				// 	}
+				// 	throw new \Exception("Failed to generate 4 digit CRC", 900);
+				// }
+				if (strlen($citt) == 4) break;
+			}
+		}
 		//
-		for ($i = 0; $i < $this->encode_attempt; $i++) {
-			$citt = strtoupper(dechex((new Crc16)->CCITT_FALSE($qris_string . '6304')));
-			$debug_citt_attempts[] = $citt;
-			if ($i >= $this->encode_attempt) {
-				$debug_arr = [
-					'qris_string' => $qris_string,
-					'debug_citt_attempts' => $debug_citt_attempts,
-				];
-				if ($this->debug) {
-					throw new \Exception("Failed to generate 4 digit CRC in $this->encode_attempt attempts. Debug: " . json_encode($debug_arr), 900);
-				}
-				throw new \Exception("Failed to generate 4 digit CRC", 900);
-			}
-			if (strlen($citt) == 4) {
-				break;
-			}
+		if (strlen($citt) != 4) {
+			throw new \Exception("Failed to generate final 4 digit CRC", 900);
 		}
 		// Append CRC
 		$qris_string .= '6304' . $citt;

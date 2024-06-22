@@ -450,3 +450,28 @@ if (!function_exists('CheckThenRemoveLuhn')) {
 		return $number;
 	}
 }
+
+
+
+/** /*------------------------------------------------------------------  // CRC16   -------------------------------------------------------*
+ *
+ * Crc16
+ *
+ */
+if (!function_exists('CRC16Normal')) {
+	function CRC16Normal($buffer)
+	{
+		// $buffer = hex2bin($buffer);
+		$result = 0xFFFF;
+		if (($length = strlen($buffer)) > 0) {
+			for ($offset = 0; $offset < $length; $offset++) {
+				$result ^= (ord($buffer[$offset]) << 8);
+				for ($bitwise = 0; $bitwise < 8; $bitwise++) {
+						if (($result <<= 1) & 0x10000) $result ^= 0x1021; // CRC16POLYN;
+						$result &= 0xFFFF;
+				}
+			}
+		}
+		return dechex($result);
+	}
+}
