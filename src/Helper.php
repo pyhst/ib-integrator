@@ -124,6 +124,27 @@ if (!function_exists('ArrayToObjectRecursive')) {
 		return is_array($d) ? (object) array_map(__FUNCTION__, $d) : $d;
 	}
 }
+/**
+ *
+ * Join JSON param
+ *
+ */
+if (!function_exists('JoinJSONParam')) {
+	function JoinJSONParam($original, $additional): string
+	{
+		if (is_string($original) && IsJSON($original)) {
+			$original = json_decode($original);
+		} elseif (is_null($original)) {
+			$original = [];
+		}
+		if (is_string($additional) || is_integer($additional)) {
+			$additional = [$additional];
+		} elseif (is_null($additional)) {
+			$additional = [];
+		}
+		return json_encode(array_merge($original, $additional));
+	}
+}
 
 
 /** /*------------------------------------------------------------------  // JSONs   -------------------------------------------------------*
