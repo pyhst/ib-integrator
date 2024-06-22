@@ -67,6 +67,13 @@ class Transaction
 	protected $beneficiary_name;
 	protected $purpose_of_transaction;
 	//
+	protected $product_id;
+	protected $product_name;
+	protected $product_price;
+	protected $product_type;
+	protected $product_url;
+	protected $product_quantity;
+	//
 	protected $merchant_id;
 	protected $merchant_name;
 	protected $merchant_email;
@@ -623,6 +630,68 @@ class Transaction
 	public function getPurposeOfTransaction(): ?string
 	{
 		return $this->purpose_of_transaction;
+	}
+
+	//
+
+	public function setProductID($product_id): void
+	{
+		$this->product_id = $product_id;
+	}
+
+	public function getProductID(): ?string
+	{
+		return $this->product_id;
+	}
+
+	public function setProductName($product_name): void
+	{
+		$this->product_name = $product_name;
+	}
+
+	public function getProductName(): ?string
+	{
+		return $this->product_name;
+	}
+
+	public function setProductPrice($product_price): void
+	{
+		$this->product_price = $product_price;
+	}
+
+	public function getProductPrice(): ?string
+	{
+		return $this->product_price;
+	}
+
+	public function setProductType($product_type): void
+	{
+		$this->product_type = $product_type;
+	}
+
+	public function getProductType(): ?string
+	{
+		return $this->product_type;
+	}
+
+	public function setProductURL($product_url): void
+	{
+		$this->product_url = $product_url;
+	}
+
+	public function getProductURL(): ?string
+	{
+		return $this->product_url;
+	}
+
+	public function setProductQuantity($product_quantity): void
+	{
+		$this->product_quantity = $product_quantity;
+	}
+
+	public function getProductQuantity(): ?string
+	{
+		return $this->product_quantity;
 	}
 
 	//

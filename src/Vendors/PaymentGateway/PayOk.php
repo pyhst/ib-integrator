@@ -66,12 +66,12 @@ class PayOk extends Vendor implements PaymentGatewayInterface
 						'productName' => $transaction->getDescription(),
 						'expire' => (int) $transaction->getExpireIn(), // minutes
 						'productInfo' => [[
-							'id' => $transaction->getReferenceNumber(),
-							'name' => $transaction->getDescription(),
-							'price' => (int) $transaction->getAmount() . '.00',
-							'type' => strtoupper($payment_method),
-							// 'url' => '',
-							'quantity' => 1,
+							'id' => $transaction->getProductID(),
+							'name' => $transaction->getProductName(),
+							'price' => (int) $transaction->getProductPrice() . '.00',
+							'type' => $transaction->getProductType(),
+							'url' => $transaction->getProductURL(),
+							'quantity' => $transaction->getProductQuantity(),
 						]],
 					];
 					break;
@@ -95,12 +95,12 @@ class PayOk extends Vendor implements PaymentGatewayInterface
 						],
 						'productName' => $transaction->getDescription(),
 						'productInfo' => [[
-							'id' => $transaction->getReferenceNumber(),
-							'name' => $transaction->getDescription(),
-							'price' => (int) $transaction->getAmount() . '.00',
-							'type' => strtoupper($payment_method),
-							// 'url' => '',
-							'quantity' => 1,
+							'id' => $transaction->getProductID(),
+							'name' => $transaction->getProductName(),
+							'price' => (int) $transaction->getProductPrice() . '.00',
+							'type' => $transaction->getProductType(),
+							'url' => $transaction->getProductURL(),
+							'quantity' => $transaction->getProductQuantity(),
 						]],
 					];
 					break;
@@ -121,12 +121,12 @@ class PayOk extends Vendor implements PaymentGatewayInterface
 						'payer' => $transaction->getCustomerName(),
 						'productName' => $transaction->getDescription(),
 						'productInfo' => [[
-							'id' => $transaction->getReferenceNumber(),
-							'name' => $transaction->getDescription(),
-							'price' => (int) $transaction->getAmount() . '.00',
-							'type' => strtoupper($payment_method),
-							// 'url' => '',
-							'quantity' => 1,
+							'id' => $transaction->getProductID(),
+							'name' => $transaction->getProductName(),
+							'price' => (int) $transaction->getProductPrice() . '.00',
+							'type' => $transaction->getProductType(),
+							'url' => $transaction->getProductURL(),
+							'quantity' => $transaction->getProductQuantity(),
 						]],
 					];
 					break;
