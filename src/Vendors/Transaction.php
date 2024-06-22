@@ -17,7 +17,9 @@ class Transaction
 	protected $order_id;
 	protected $transaction_id;
 	protected $transaction_time;
+	protected $transaction_date;
 	protected $reference_num;
+	protected $original_reference_num;
 	protected $invoice_num;
 	protected $description;
 	protected $remark;
@@ -25,6 +27,7 @@ class Transaction
 	protected $correlation_id;
 		protected $external_id;
 		protected $request_id;
+		protected $request_datetime;
 		protected $start_date;
 		protected $end_date;
 	//
@@ -57,6 +60,7 @@ class Transaction
 	protected $customer_bank_account_name;
 	protected $customer_bank_account_number;
 	protected $customer_bank_code;
+	protected $customer_reference_num;
 	protected $sender_id;
 	protected $sender_name;
 	protected $beneficiary_id;
@@ -163,6 +167,16 @@ class Transaction
 		return $this->transaction_time;
 	}
 
+	public function setTransactionDate(string $transaction_date): void
+	{
+		$this->transaction_date = $transaction_date;
+	}
+
+	public function getTransactionDate(): ?string
+	{
+		return $this->transaction_date;
+	}
+
 	public function setCorrelationID(string $correlation_id): void
 	{
 		$this->correlation_id = $correlation_id;
@@ -191,6 +205,16 @@ class Transaction
 		public function getRequestID(): ?string
 		{
 			return $this->request_id;
+		}
+
+		public function setRequestDateTime(string $request_datetime): void
+		{
+			$this->request_datetime = $request_datetime;
+		}
+
+		public function getRequestDateTime(): ?string
+		{
+			return $this->request_datetime;
 		}
 
 		public function setStartDate(string $start_date): void
@@ -222,6 +246,16 @@ class Transaction
 	{
 		return $this->reference_num;
 	}
+
+		public function setOriginalReferenceNumber(string $original_reference_num): void
+		{
+			$this->original_reference_num = $original_reference_num;
+		}
+
+		public function getOriginalReferenceNumber(): ?string
+		{
+			return $this->original_reference_num;
+		}
 
 	public function setInvoiceNumber(string $invoice_num): void
 	{
@@ -530,6 +564,16 @@ class Transaction
 	{
 		return $this->customer_bank_code;
 	}
+
+		public function setCustomerReferenceNumber($customer_reference_num): void
+		{
+			$this->customer_reference_num = $customer_reference_num;
+		}
+
+		public function getCustomerReferenceNumber(): ?string
+		{
+			return $this->customer_reference_num;
+		}
 
 	public function setSenderID($sender_id): void
 	{

@@ -52,7 +52,7 @@ class G2UP extends Vendor implements PaymentGatewayInterface
 				'X-TIME' => $timestamp,
 				'X-SIGNATURE' => $signature,
 			];
-			$request['option'] = [
+			$request['options'] = [
 				'as_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -73,14 +73,15 @@ class G2UP extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
-						'data' => array_merge((array) $content, $request['data']),
+						'request' => $request,
+						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -132,8 +133,8 @@ class G2UP extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					!empty($content->referenceNo)
-					&& !empty($content->paymentNo)
+					(!empty($content->referenceNo) && !empty($content->paymentNo))
+					|| (!empty($content->{0}->referenceNo) && !empty($content->{0}->paymentNo))
 				) {
 					/* // Success inquiry QRIS
 						[
@@ -151,14 +152,15 @@ class G2UP extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);

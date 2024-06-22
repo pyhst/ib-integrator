@@ -54,7 +54,7 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			$request['headers'] = [
 				'Accept' => 'application/json',
 			];
-			$request['option'] = [
+			$request['options'] = [
 				// 'as_json' => true,
 			];
 			$get = $this->DoRequest('GET', $request);
@@ -98,14 +98,15 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -147,11 +148,10 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			$request['headers'] = [
 				'Accept' => 'application/json',
 			];
-			$request['option'] = [
+			$request['options'] = [
 				// 'as_json' => true,
 			];
 			$get = $this->DoRequest('GET', $request);
-			$response = (array) $get['response'];
 			$response = (array) $get['response'];
 			extract($response);
 			if (!empty($content) && IsJSON($content)) {
@@ -186,13 +186,14 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content->data,
 					];
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -251,14 +252,14 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			);
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
-				'request_id' => 'CB' . $time,
+				'request_id' => $transaction->getRequestID() ?? 'CB' . $time,
 				'signature' => $signature,
 			];
 			$request['headers'] = [
 				'Accept' => 'application/json',
 			];
-			$request['option'] = [
-				// 'as_json' => true,
+			$request['options'] = [
+				'as_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
 			$response = (array) $post['response'];
@@ -283,13 +284,14 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
-						'data' => $content->data,
+						'request' => $request,
+						'data' => (array) $content,
 					];
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -314,19 +316,19 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
 				'project_no' => $this->getParam('GEMPAY_PROJECT_NO'),
-				'request_id' => 'BAI' . $time,
+				'request_id' => $transaction->getRequestID() ?? 'BAI' . $time,
 				'amount' => $transaction->getAmount(),
 				'remit_type' => $transaction->getTransferMethod(),
 				'partner_ref_id' => $transaction->getReferenceNumber(),
 				'account_no' => $transaction->getCustomerBankAccountNumber(),
 				'bank_code' => $transaction->getCustomerBankCode(),
-				'transaction_datetime' => $transaction->getTransactionTime(),
+				'transaction_datetime' => $transaction->getTransactionDate(),
 				'signature' => $signature,
 			];
 			$request['headers'] = [
 				'Accept' => 'application/json',
 			];
-			$request['option'] = [
+			$request['options'] = [
 				// 'as_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -361,13 +363,14 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
-						'data' => $content->data,
+						'request' => $request,
+						'data' => (array) $content,
 					];
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -392,16 +395,16 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
 				'project_no' => $this->getParam('GEMPAY_PROJECT_NO'),
-				'request_id' => 'OTE' . $time,
+				'request_id' => $transaction->getRequestID() ?? 'TF' . $time,
 				'inquiry_id' => $transaction->getOrderID(),
 				'description' => $transaction->getDescription(),
-				'transaction_datetime' => $transaction->getTransactionTime(),
+				'transaction_datetime' => $transaction->getTransactionDate(),
 				'signature' => $signature,
 			];
 			$request['headers'] = [
 				'Accept' => 'application/json',
 			];
-			$request['option'] = [
+			$request['options'] = [
 				// 'as_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -436,13 +439,14 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
-						'data' => $content->data,
+						'request' => $request,
+						'data' => (array) $content,
 					];
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -466,14 +470,14 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			);
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
-				'request_id' => 'CT' . $time,
+				'request_id' => $transaction->getRequestID() ?? 'CTF' . $time,
 				'partner_ref_id' => $transaction->getParam('partner_ref_id'),
 				'signature' => $signature,
 			];
 			$request['headers'] = [
 				'Accept' => 'application/json',
 			];
-			$request['option'] = [
+			$request['options'] = [
 				// 'as_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
@@ -506,13 +510,14 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
-						'data' => $content->data,
+						'request' => $request,
+						'data' => (array) $content,
 					];
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);

@@ -51,7 +51,7 @@ class Artajasa extends Vendor implements SwitchingInterface
 	public function _Replace($data = null)
 	{
 		// Set post variables
-		$this->datetime = new \DateTime(now(), new \DateTimeZone('UTC'));
+		$this->datetime = new \DateTime('now', new \DateTimeZone('UTC'));
 		$this->timestamp = strval( $this->datetime->getTimestamp() );
 		$this->his = $this->datetime->format('His');
 		$this->md = $this->datetime->format('md');
@@ -125,14 +125,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -182,14 +183,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -239,14 +241,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -298,14 +301,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -339,14 +343,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -380,14 +385,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -421,14 +427,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -467,14 +474,15 @@ class Artajasa extends Vendor implements SwitchingInterface
 				) {
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);

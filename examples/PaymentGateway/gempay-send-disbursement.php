@@ -24,7 +24,7 @@ $vendor->setParams([
 //  *
 //  */
 // try {
-// 	$result = $vendor->CheckBalance();
+// 	$result = $vendor->CheckAccountBalance(new Transaction);
 // 	extract($result);
 // 	print_r($response);
 // 	/* // Success check balance
@@ -38,7 +38,7 @@ $vendor->setParams([
 // 		}
 // 	*/
 // } catch (\Throwable $e) {
-// 	print_r($vendor::ThrowError($e));
+// 	print_r(ErrorToString($e)); // $vendor->ThrowErrorException($e);
 // }
 
 
@@ -53,11 +53,11 @@ $vendor->setParams([
 // 	$transaction = new Transaction();
 // 	// $transaction->setRequestID($time);
 // 	$transaction->setReferenceNumber($time);
-// 	$transaction->setAmount('10000');
+// 	$transaction->setAmount(10000);
 // 	$transaction->setTransferMethod('bank'); // bank / wallet
 // 	$transaction->setCustomerBankAccountNumber('7700173383');
 // 	$transaction->setCustomerBankCode('011');
-// 	$transaction->setReqDateTime(date('Y-m-d H:i:s', $time));
+// 	$transaction->setTransactionDate(date('Y-m-d H:i:s', $time));
 // 	$result = $vendor->BankAccountInquiry($transaction);
 // 	extract($result);
 // 	print_r($response);
@@ -81,7 +81,7 @@ $vendor->setParams([
 // 		}
 // 	*/
 // } catch (\Throwable $e) {
-// 	$vendor->ThrowErrorException($e);
+// 	print_r(ErrorToString($e)); // $vendor->ThrowErrorException($e);
 // }
 
 
@@ -96,8 +96,8 @@ $vendor->setParams([
 // 	$transaction = new Transaction();
 // 	$transaction->setOrderID('240521130455ZGLJ');
 // 	$transaction->setDescription('TEST-TRANSFER');
-// 	$transaction->setReqDateTime(date('Y-m-d H:i:s', $time));
-// 	$result = $vendor->OnlineTransferExec($transaction);
+// 	$transaction->setTransactionDate(date('Y-m-d H:i:s', $time));
+// 	$result = $vendor->FundTransfer($transaction);
 // 	extract($result);
 // 	print_r($response);
 // 	/* // Success disb
@@ -120,7 +120,7 @@ $vendor->setParams([
 // 		}
 // 	*/
 // } catch (\Throwable $e) {
-// 	$vendor->ThrowErrorException($e);
+// 	print_r(ErrorToString($e)); // $vendor->ThrowErrorException($e);
 // }
 
 
@@ -131,11 +131,11 @@ $vendor->setParams([
 //  *
 //  */
 // try {
-// 	$request = (object) [
+// 	$transaction = new Transaction;
+// 	$transaction->setParams([
 // 		'partner_ref_id' => '1716271492',
-// 	];
-// 	//
-// 	$result = $vendor->CheckTransfer($request);
+// 	]);
+// 	$result = $vendor->CheckFundTransferStatus($transaction);
 // 	extract($result);
 // 	print_r($response);
 // 	/* // Success check status
@@ -156,5 +156,5 @@ $vendor->setParams([
 // 		}
 // 	*/
 // } catch (\Throwable $e) {
-// 	print_r($vendor::ThrowError($e));
+// 	print_r(ErrorToString($e)); // $vendor->ThrowErrorException($e);
 // }

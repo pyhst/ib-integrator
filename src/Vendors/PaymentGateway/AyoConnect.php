@@ -56,13 +56,14 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -170,14 +171,15 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -258,14 +260,15 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -326,14 +329,15 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
@@ -386,14 +390,15 @@ class AyoConnect extends Vendor implements PaymentGatewayInterface
 					*/
 					$res = [
 						'status' => '000',
+						'request' => $request,
 						'data' => (array) $content,
 					];
 					$status_code = 200;
 				} else {
-					throw new JsonException(__FUNCTION__, json_encode($content), 400, 901);
+					throw new JsonException(__FUNCTION__, 'Unknown status: ' . json_encode($content), 400, 901);
 				}
 			} else {
-				throw new JsonException(__FUNCTION__, $content, 400, 902);
+				throw new JsonException(__FUNCTION__, $content ?? 'Unknown error', 400, 902);
 			}
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
