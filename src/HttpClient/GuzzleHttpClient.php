@@ -151,7 +151,8 @@ class GuzzleHttpClient
 		$method = $request->getMethod();
 		$headers = [];
 		foreach ($request->getHeaders() as $name => $values) {
-			$headers[] = $name . ": " . implode(", ", $values);
+			// $headers[] = $name . ": " . implode(", ", $values);
+			$headers[$name] = implode(", ", $values);
 		}
 		if (is_string($data) && is_array(json_decode($data, true))) {
 			$data = json_decode($data, true);
