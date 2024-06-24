@@ -542,7 +542,7 @@ class PayOk extends Vendor implements PaymentGatewayInterface
 		} catch (\Throwable $e) {
 			throw new ErrorException($e);
 		}
-		return JSONResult($data, $res ?? [], $status_code ?? 400);
+		return $res;
 	}
 
 	//
