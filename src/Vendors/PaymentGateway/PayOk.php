@@ -510,6 +510,41 @@ class PayOk extends Vendor implements PaymentGatewayInterface
 		return JSONResult($request, $res ?? [], $status_code ?? 400);
 	}
 
+	public function PaymentCallbackResponse($data, $url, $request_id = null)
+	{
+		try {
+			$time = time();
+			$timestamp = date("Y-m-d", $time) . "T" . date("H:i:s.B", $time) . "+07:00";
+			$hash = strtolower(hash("sha256", json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+			$string_to_sign = implode(':', [
+				'POST',
+				$url,
+				$hash,
+				$timestamp
+			]);
+			$signature = '';
+			$private_key = $this->RetrievePrivateKey();
+			$private_key = openssl_pkey_get_private($private_key);
+			if (!openssl_sign($string_to_sign, $signature, $private_key, OPENSSL_ALGO_SHA256)) {
+				throw new \Exception('Failed to getToken', 800);
+			}
+			$headers = [
+				'Content-Type' => 'application/json;charset=utf-8',
+				'X-TIMESTAMP' => $timestamp,
+				'X-SIGNATURE' => base64_encode($signature),
+				'X-PARTNER-ID' => $this->getID(),
+				'X-REQUEST-ID' => $request_id ?? date('YmdHis', $time),
+			];
+			$res = [
+				'headers' => $headers,
+				'data' => (array) $data,
+			];
+		} catch (\Throwable $e) {
+			throw new ErrorException($e);
+		}
+		return JSONResult($data, $res ?? [], $status_code ?? 400);
+	}
+
 	//
 
 	public function GetBankList(Transaction $transaction)
