@@ -427,7 +427,7 @@ class PayOk extends Vendor implements PaymentGatewayInterface
 										"quantity": 1
 								}
 							],
-							"redirectUrl": "http://sb.tf2us.com/secure/callback/demo",
+							"redirectUrl": "http://tester.com/secure/callback/demo",
 							"transFeeRate": "0.001000",
 							"transFeeAmount": "10000.00",
 							"totalTransFee": "10015.00",

@@ -11,7 +11,7 @@ $vendor->setSecret($_ENV['GEMPAY_SECRET']);
 $vendor->setHostURL($_ENV['GEMPAY_HOST_URL']);
 $vendor->setPaymentURL($_ENV['GEMPAY_HOST_URL']);
 $vendor->setRequestURL($_ENV['GEMPAY_HOST_URL']);
-$vendor->setCallbackURL('http://sb.tf2us.com/secure/callback/demo');
+$vendor->setCallbackURL('http://tester.com/secure/callback/demo');
 $vendor->setParams([
 	'GEMPAY_PROJECT_NO' => $_ENV['GEMPAY_PROJECT_NO'],
 ]);
@@ -30,10 +30,27 @@ $vendor->setParams([
 // 	/* // Success check balance
 // 		{
 // 			"status": "000",
+// 			"request": {
+// 				"url": "https:\/\/sandbox.gempay.online\/api\/balance_query",
+// 				"data": {
+// 						"merchant_id": "KMB0001",
+// 						"request_id": "CB1719205793",
+// 						"signature": "934b7003eda1f40c40313a89292f7dc2"
+// 				},
+// 				"headers": {
+// 						"Accept": "application\/json"
+// 				},
+// 				"options": []
+// 			},
 // 			"data": {
-// 				"merchant_id": "KMB0001",
-// 				"active_balance": "1079400",
-// 				"pending_balance": "800000"
+// 				"result": true,
+// 				"error_code": "000",
+// 				"error_desc": "Data found",
+// 				"data": {
+// 						"merchant_id": "KMB0001",
+// 						"active_balance": "969400",
+// 						"pending_balance": "800000"
+// 				}
 // 			}
 // 		}
 // 	*/
@@ -64,19 +81,43 @@ $vendor->setParams([
 // 	/* // Success bank account inquiry
 // 		{
 // 			"status": "000",
+// 			"request": {
+// 				"url": "https:\/\/sandbox.gempay.online\/api\/inquiry",
+// 				"data": {
+// 						"merchant_id": "KMB0001",
+// 						"project_no": "UJK87AA",
+// 						"request_id": "BAI1719205819",
+// 						"amount": 10000,
+// 						"remit_type": "bank",
+// 						"partner_ref_id": "1719205819",
+// 						"account_no": "7700173383",
+// 						"bank_code": "011",
+// 						"transaction_datetime": "2024-06-24 12:10:19",
+// 						"signature": "5a05f2962d15251b6ac42d3c82328e60"
+// 				},
+// 				"headers": {
+// 						"Accept": "application\/json"
+// 				},
+// 				"options": []
+// 			},
 // 			"data": {
-// 				"partner_ref_id": "1716270835",
-// 				"inquiry_id": "240521125358QZHN",
-// 				"bank_code": "011",
-// 				"account_name": "7700173383",
-// 				"account_no": "7700173383",
-// 				"account_bank": "Bank Danamon & Danamon Syariah",
-// 				"amount": 10000,
-// 				"admin_fee": 2000,
-// 				"total_amount": 12000,
-// 				"transaction_datetime": "2024-05-21 12:53:55",
-// 				"merchant_id": "KMB0001",
-// 				"project_no": "UJK87AA"
+// 				"result": true,
+// 				"error_code": "000",
+// 				"error_desc": "Data Found",
+// 				"data": {
+// 						"partner_ref_id": "1719205819",
+// 						"inquiry_id": "240624121020J999",
+// 						"bank_code": "011",
+// 						"account_name": "7700173383",
+// 						"account_no": "7700173383",
+// 						"account_bank": "Bank Danamon & Danamon Syariah",
+// 						"amount": 10000,
+// 						"admin_fee": 2000,
+// 						"total_amount": 12000,
+// 						"transaction_datetime": "2024-06-24 12:10:19",
+// 						"merchant_id": "KMB0001",
+// 						"project_no": "UJK87AA"
+// 				}
 // 			}
 // 		}
 // 	*/
@@ -94,7 +135,7 @@ $vendor->setParams([
 // try {
 // 	$time = time();
 // 	$transaction = new Transaction();
-// 	$transaction->setOrderID('240521130455ZGLJ');
+// 	$transaction->setOrderID('240624121020J999');
 // 	$transaction->setDescription('TEST-TRANSFER');
 // 	$transaction->setTransactionDate(date('Y-m-d H:i:s', $time));
 // 	$result = $vendor->FundTransfer($transaction);
@@ -103,19 +144,40 @@ $vendor->setParams([
 // 	/* // Success disb
 // 		{
 // 			"status": "000",
+// 			"request": {
+// 				"url": "https:\/\/sandbox.gempay.online\/api\/transfer",
+// 				"data": {
+// 						"merchant_id": "KMB0001",
+// 						"project_no": "UJK87AA",
+// 						"request_id": "TF1719205850",
+// 						"inquiry_id": "240624121020J999",
+// 						"description": "TEST-TRANSFER",
+// 						"transaction_datetime": "2024-06-24 12:10:50",
+// 						"signature": "32fadefd8e71cb6cfe4a0d0b82d6721c"
+// 				},
+// 				"headers": {
+// 						"Accept": "application\/json"
+// 				},
+// 				"options": []
+// 			},
 // 			"data": {
-// 				"partner_ref_id": "1716271492",
-// 				"bank_code": "011",
-// 				"account_no": "7700173383",
-// 				"account_bank": "Bank Danamon & Danamon Syariah",
-// 				"amount": 10000,
-// 				"admin_fee": 2000,
-// 				"total_amount": 12000,
-// 				"transaction_datetime": "2024-05-21 13:05:04",
-// 				"merchant_id": "KMB0001",
-// 				"project_no": "UJK87AA",
-// 				"ref_id": "240521130507N64P",
-// 				"status": "success"
+// 				"result": true,
+// 				"error_code": "000",
+// 				"error_desc": "Disburse Successful",
+// 				"data": {
+// 						"partner_ref_id": "1719205819",
+// 						"bank_code": "011",
+// 						"account_no": "7700173383",
+// 						"account_bank": "Bank Danamon & Danamon Syariah",
+// 						"amount": 10000,
+// 						"admin_fee": 2000,
+// 						"total_amount": 12000,
+// 						"transaction_datetime": "2024-06-24 12:10:50",
+// 						"merchant_id": "KMB0001",
+// 						"project_no": "UJK87AA",
+// 						"ref_id": "2406241210515DTW",
+// 						"status": "success"
+// 				}
 // 			}
 // 		}
 // 	*/
@@ -133,7 +195,7 @@ $vendor->setParams([
 // try {
 // 	$transaction = new Transaction;
 // 	$transaction->setParams([
-// 		'partner_ref_id' => '1716271492',
+// 		'partner_ref_id' => '1719205819',
 // 	]);
 // 	$result = $vendor->CheckFundTransferStatus($transaction);
 // 	extract($result);
@@ -141,17 +203,35 @@ $vendor->setParams([
 // 	/* // Success check status
 // 		{
 // 			"status": "000",
+// 			"request": {
+// 				"url": "https:\/\/sandbox.gempay.online\/api\/status_query",
+// 				"data": {
+// 						"merchant_id": "KMB0001",
+// 						"request_id": "CTF1719205881",
+// 						"partner_ref_id": "1719205819",
+// 						"signature": "5e00a33e8595120cfa09f4c396ca5905"
+// 				},
+// 				"headers": {
+// 						"Accept": "application\/json"
+// 				},
+// 				"options": []
+// 			},
 // 			"data": {
-// 				"transaction_datetime": "2024-05-21 13:05:04",
-// 				"account_no": "7700173383",
-// 				"account_bank": "Bank Danamon & Danamon Syariah",
-// 				"amount": "10000",
-// 				"description": "TEST-TRANSFER",
-// 				"merchant_id": "KMB0001",
-// 				"status": "Success",
-// 				"admin_fee": "2000",
-// 				"partner_ref_id": "1716271492",
-// 				"ref_id": "240521130507N64P"
+// 				"result": true,
+// 				"error_code": "000",
+// 				"error_desc": "Data found",
+// 				"data": {
+// 						"transaction_datetime": "2024-06-24 12:10:50",
+// 						"account_no": "7700173383",
+// 						"account_bank": "Bank Danamon & Danamon Syariah",
+// 						"amount": "10000",
+// 						"description": "TEST-TRANSFER",
+// 						"merchant_id": "KMB0001",
+// 						"status": "Success",
+// 						"admin_fee": "2000",
+// 						"partner_ref_id": "1719205819",
+// 						"ref_id": "2406241210515DTW"
+// 				}
 // 			}
 // 		}
 // 	*/

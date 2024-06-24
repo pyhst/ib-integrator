@@ -240,26 +240,27 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 	{
 		try {
 			$time = time();
+			$request_id = $transaction->getRequestID() ?? 'CB' . $time;
 			$request['url'] = CleanURL(
 				$this->getRequestURL() .
 				'/api/balance_query'
 			);
 			$signature = md5(
-				'CB' . $time .
+				$request_id .
 				$this->getID() .
 				$this->getSecret() .
 				'balance_query'
 			);
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
-				'request_id' => $transaction->getRequestID() ?? 'CB' . $time,
+				'request_id' => $request_id,
 				'signature' => $signature,
 			];
 			$request['headers'] = [
 				'Accept' => 'application/json',
 			];
 			$request['options'] = [
-				'as_json' => true,
+				// 'as_json' => true,
 			];
 			$post = $this->DoRequest('POST', $request);
 			$response = (array) $post['response'];
@@ -303,12 +304,13 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 	{
 		try {
 			$time = time();
+			$request_id = $transaction->getRequestID() ?? 'BAI' . $time;
 			$request['url'] = CleanURL(
 				$this->getRequestURL() .
 				'/api/inquiry'
 			);
 			$signature = md5(
-				'BAI' . $time .
+				$request_id .
 				$this->getID() .
 				$this->getSecret() .
 				'inquiry'
@@ -316,7 +318,7 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
 				'project_no' => $this->getParam('GEMPAY_PROJECT_NO'),
-				'request_id' => $transaction->getRequestID() ?? 'BAI' . $time,
+				'request_id' => $request_id,
 				'amount' => $transaction->getAmount(),
 				'remit_type' => $transaction->getTransferMethod(),
 				'partner_ref_id' => $transaction->getReferenceNumber(),
@@ -382,12 +384,13 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 	{
 		try {
 			$time = time();
+			$request_id = $transaction->getRequestID() ?? 'TF' . $time;
 			$request['url'] = CleanURL(
 				$this->getRequestURL() .
 				'/api/transfer'
 			);
 			$signature = md5(
-				'OTE' . $time .
+				$request_id .
 				$this->getID() .
 				$this->getSecret() .
 				'transfer'
@@ -395,7 +398,7 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
 				'project_no' => $this->getParam('GEMPAY_PROJECT_NO'),
-				'request_id' => $transaction->getRequestID() ?? 'TF' . $time,
+				'request_id' => $request_id,
 				'inquiry_id' => $transaction->getOrderID(),
 				'description' => $transaction->getDescription(),
 				'transaction_datetime' => $transaction->getTransactionDate(),
@@ -458,19 +461,20 @@ class Gempay extends Vendor implements PaymentGatewayInterface
 	{
 		try {
 			$time = time();
+			$request_id = $transaction->getRequestID() ?? 'CTF' . $time;
 			$request['url'] = CleanURL(
 				$this->getRequestURL() .
 				'/api/status_query'
 			);
 			$signature = md5(
-				'CT' . $time .
+				$request_id .
 				$this->getID() .
 				$this->getSecret() .
 				'status_query'
 			);
 			$request['data'] = [
 				'merchant_id' => $this->getID(),
-				'request_id' => $transaction->getRequestID() ?? 'CTF' . $time,
+				'request_id' => $request_id,
 				'partner_ref_id' => $transaction->getParam('partner_ref_id'),
 				'signature' => $signature,
 			];
