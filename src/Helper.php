@@ -142,9 +142,9 @@ if (!function_exists('JoinJSONParam')) {
 		} elseif (is_null($additional)) {
 			$additional = [];
 		}
-		if (!in_array($additional, $original)) {
+		// if (!in_array($additional, $original)) {
 			$original = array_merge($original, [$additional]);
-		}
+		// }
 		return json_encode($original);
 	}
 }
