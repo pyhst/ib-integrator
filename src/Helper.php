@@ -133,16 +133,19 @@ if (!function_exists('JoinJSONParam')) {
 	function JoinJSONParam($original, $additional): string
 	{
 		if (is_string($original) && IsJSON($original)) {
-			$original = json_decode($original);
+			$original = json_decode($original, true);
 		} elseif (is_null($original)) {
 			$original = [];
 		}
 		if (is_string($additional) || is_integer($additional)) {
-			$additional = [$additional];
+			//
 		} elseif (is_null($additional)) {
 			$additional = [];
 		}
-		return json_encode(array_merge($original, $additional));
+		if (!in_array($additional, $original)) {
+			$original = array_merge($original, [$additional]);
+		}
+		return json_encode($original);
 	}
 }
 
