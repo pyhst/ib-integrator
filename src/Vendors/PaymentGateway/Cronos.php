@@ -143,7 +143,7 @@ class Cronos extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					isset($content->responseMessage)
+					!empty($content->responseMessage)
 					&& trim(strtolower($content->responseMessage)) == 'success'
 				) {
 					/* // Success QRIS
@@ -274,7 +274,7 @@ class Cronos extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					isset($content->responseMessage)
+					!empty($content->responseMessage)
 					&& trim(strtolower($content->responseMessage)) == 'success'
 				) {
 					/* // Success inquiry QRIS
@@ -376,7 +376,7 @@ class Cronos extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					isset($content->responseMessage)
+					!empty($content->responseMessage)
 					&& trim(strtolower($content->responseMessage)) == 'success'
 				) {
 					/* // Success check balance
@@ -444,7 +444,7 @@ class Cronos extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					isset($content->responseMessage)
+					!empty($content->responseMessage)
 					&& trim(strtolower($content->responseMessage)) == 'success'
 				) {
 					/* // Success bank account inquiry
@@ -518,7 +518,7 @@ class Cronos extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					isset($content->responseMessage)
+					!empty($content->responseMessage)
 					&& trim(strtolower($content->responseMessage)) == 'success'
 				) {
 					/* // Success disb
@@ -586,7 +586,7 @@ class Cronos extends Vendor implements PaymentGatewayInterface
 			if (!empty($content) && IsJSON($content)) {
 				$content = (object) json_decode($content);
 				if (
-					isset($content->responseMessage)
+					!empty($content->responseMessage)
 					&& trim(strtolower($content->responseMessage)) == 'success'
 				) {
 					/* // Success check status
