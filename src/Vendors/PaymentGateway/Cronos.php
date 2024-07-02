@@ -357,8 +357,6 @@ class Cronos extends Vendor implements PaymentGatewayInterface
 
 	public function CheckAccountBalance(Transaction $transaction)
 	{
-
-
 		try {
 			$request['url'] = CleanURL(
 				$this->getRequestURL() .
